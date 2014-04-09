@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>frames</key>
+	<dict>
+		<key>SteamBotDoor/SteamBot.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{645, 190}, {85, 64}}</string>
+			<key>offset</key>
+			<string>{-4, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{3, 18}, {85, 64}}</string>
+			<key>sourceSize</key>
+			<string>{100, 100}</string>
+		</dict>
+		<key>SteamBotDoor/SteamBot_left.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{645, 124}, {64, 132}}</string>
+			<key>offset</key>
+			<string>{0, 1}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 6}, {64, 132}}</string>
+			<key>sourceSize</key>
+			<string>{64, 146}</string>
+		</dict>
+		<key>SteamBotDoor/SteamBot_right.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{779, 124}, {67, 131}}</string>
+			<key>offset</key>
+			<string>{-3, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 7}, {67, 131}}</string>
+			<key>sourceSize</key>
+			<string>{74, 145}</string>
+		</dict>
+		<key>SteamBotDoor/brokenBridge.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{645, 1}, {320, 121}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 6}, {320, 121}}</string>
+			<key>sourceSize</key>
+			<string>{320, 134}</string>
+		</dict>
+		<key>SteamBotDoor/burner.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{912, 124}, {117, 50}}</string>
+			<key>offset</key>
+			<string>{0, 1}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {117, 50}}</string>
+			<key>sourceSize</key>
+			<string>{118, 52}</string>
+		</dict>
+		<key>SteamBotDoor/door_bottom.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1, 1}, {320, 283}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {320, 283}}</string>
+			<key>sourceSize</key>
+			<string>{320, 283}</string>
+		</dict>
+		<key>SteamBotDoor/door_top.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{323, 1}, {320, 282}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {320, 282}}</string>
+			<key>sourceSize</key>
+			<string>{320, 282}</string>
+		</dict>
+		<key>SteamBotDoor/playButton.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{967, 1}, {200, 56}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {200, 56}}</string>
+			<key>sourceSize</key>
+			<string>{200, 56}</string>
+		</dict>
+	</dict>
+	<key>metadata</key>
+	<dict>
+		<key>format</key>
+		<integer>2</integer>
+		<key>size</key>
+		<string>{1024, 1024}</string>
+		<key>textureFileName</key>
+		<string>SteamBotDoor.png</string>
+	</dict>
+</dict>
+</plist>

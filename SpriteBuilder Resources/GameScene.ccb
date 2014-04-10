@@ -55,7 +55,7 @@
 						<key>value</key>
 						<array>
 							<real>0.0</real>
-							<real>0.0</real>
+							<real>2</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -139,13 +139,13 @@
 				<array>
 					<dict>
 						<key>baseClass</key>
-						<string>CCSprite</string>
+						<string>CCBFile</string>
 						<key>children</key>
 						<array/>
 						<key>customClass</key>
 						<string></string>
 						<key>displayName</key>
-						<string>SteamBot</string>
+						<string>CCBFile</string>
 						<key>memberVarAssignmentName</key>
 						<string>_steamBot</string>
 						<key>memberVarAssignmentType</key>
@@ -159,7 +159,7 @@
 							<key>bodyShape</key>
 							<integer>1</integer>
 							<key>cornerRadius</key>
-							<real>32.57421875</real>
+							<real>32.69140625</real>
 							<key>density</key>
 							<real>1</real>
 							<key>dynamic</key>
@@ -171,8 +171,8 @@
 							<key>points</key>
 							<array>
 								<array>
-									<real>50</real>
-									<real>50</real>
+									<real>0.0</real>
+									<real>0.0</real>
 								</array>
 							</array>
 						</dict>
@@ -193,22 +193,11 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>0.0</real>
-									<real>0.0</real>
+									<real>160</real>
+									<real>424</real>
 									<integer>0</integer>
-									<integer>2</integer>
 									<integer>0</integer>
-								</array>
-							</dict>
-							<dict>
-								<key>name</key>
-								<string>anchorPoint</string>
-								<key>type</key>
-								<string>Point</string>
-								<key>value</key>
-								<array>
-									<real>0.5</real>
-									<real>0.5</real>
+									<integer>0</integer>
 								</array>
 							</dict>
 							<dict>
@@ -226,27 +215,11 @@
 							</dict>
 							<dict>
 								<key>name</key>
-								<string>spriteFrame</string>
+								<string>ccbFile</string>
 								<key>type</key>
-								<string>SpriteFrame</string>
+								<string>CCBFile</string>
 								<key>value</key>
-								<array>
-									<string></string>
-									<string>SteamBotDoor/SteamBot.png</string>
-								</array>
-							</dict>
-							<dict>
-								<key>name</key>
-								<string>color</string>
-								<key>type</key>
-								<string>Color3</string>
-								<key>value</key>
-								<array>
-									<real>1</real>
-									<real>1</real>
-									<real>1</real>
-									<real>1</real>
-								</array>
+								<string>SteamBot.ccb</string>
 							</dict>
 						</array>
 						<key>selected</key>
@@ -278,8 +251,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.49687498807907104</real>
-							<real>326</real>
+							<real>0.0</real>
+							<real>0.0</real>
 							<integer>0</integer>
 							<integer>2</integer>
 							<integer>0</integer>

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3611162418F3233F00C8EB44 /* burnerFire.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3611162318F3233F00C8EB44 /* burnerFire.plist */; };
+		36F88C8B18F628DB001F0A8F /* steamEffect.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36F88C8A18F628DB001F0A8F /* steamEffect.plist */; };
 		36FA3D3218F0B7E4006CCA7E /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FA3D3118F0B7E4006CCA7E /* GameScene.m */; };
 		36FA3D3A18F120BF006CCA7E /* SteamBot.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FA3D3918F120BF006CCA7E /* SteamBot.m */; };
 		B71F5911188484E7003F4D28 /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
@@ -59,6 +60,7 @@
 
 /* Begin PBXFileReference section */
 		3611162318F3233F00C8EB44 /* burnerFire.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = burnerFire.plist; sourceTree = "<group>"; };
+		36F88C8A18F628DB001F0A8F /* steamEffect.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = steamEffect.plist; sourceTree = "<group>"; };
 		36FA3D3018F0B7E4006CCA7E /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		36FA3D3118F0B7E4006CCA7E /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		36FA3D3818F120BF006CCA7E /* SteamBot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SteamBot.h; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 		B77F1B4617B978D7009739AE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				36F88C8A18F628DB001F0A8F /* steamEffect.plist */,
 				3611162318F3233F00C8EB44 /* burnerFire.plist */,
 				B73789911807667A0076A88C /* Icons */,
 				B737893A180761570076A88C /* Published-iOS */,
@@ -309,6 +312,7 @@
 				B71F5919188484E7003F4D28 /* Settings.png in Resources */,
 				B7378978180762440076A88C /* Default@2x.png in Resources */,
 				B71F5914188484E7003F4D28 /* iPad@2x.png in Resources */,
+				36F88C8B18F628DB001F0A8F /* steamEffect.plist in Resources */,
 				B71F5913188484E7003F4D28 /* iPad.png in Resources */,
 				B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */,
 				B71F5916188484E7003F4D28 /* iPhone-old@2x.png in Resources */,

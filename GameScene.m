@@ -38,10 +38,7 @@ CGPoint mY;
     self.userInteractionEnabled = TRUE;
     
     // self.steamBot.zOrder = 10;
-    
-    // create a steamBot from the ccb-file
-    // self.steamBot = [CCBReader load:@"SteamBot"];
-    
+        
     _pulseOn = FALSE;
     
     // Fire for device
@@ -50,8 +47,14 @@ CGPoint mY;
     [self addChild:self.particles z:1];
     self.particles.position = ccp(160, 35);
     
+    // Steam for steamBot
+    self.steam = [CCParticleSystem particleWithFile:@"steamEffect.plist"];
+    [self addChild:self.steam z:1];
+    self.steam.visible = FALSE;
+    
+    
     col1.base = 0.0f;
-    col1.targetheight = 50.0f;
+    col1.targetheight = 75.0f;
     col1.springConstant = 0.25f;
     col1.left = 0.0f;
     col1.right = 320.0f;
@@ -62,16 +65,19 @@ CGPoint mY;
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     _pulseOn = TRUE;
+    self.steam.visible = TRUE;
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
     _pulseOn = FALSE;
+    self.steam.visible = FALSE;
 }
 
 -(void)update:(CCTime)delta
 {
     mY = [self.steamBot convertToWorldSpace:ccp(0, 0)];
+    self.steam.position = CGPointMake(mY.x,mY.y - 30);
     
     
     // mY = self.steamBot.position;

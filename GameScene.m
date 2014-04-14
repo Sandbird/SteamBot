@@ -31,14 +31,13 @@ typedef struct {
 
 corridor col1;
 CGPoint mY;
+float touch_X;
 
 - (void)didLoadFromCCB {
     
     // Enable touches
     self.userInteractionEnabled = TRUE;
-    
-    // self.steamBot.zOrder = 10;
-        
+
     _pulseOn = FALSE;
     
     // Fire for device
@@ -52,6 +51,9 @@ CGPoint mY;
     [self addChild:self.steam z:1];
     self.steam.visible = FALSE;
     
+    /* self.obstacleLayer = [CCBReader load:@"Corridor"];
+    [self.base addChild:self.obstacleLayer];
+    self.obstacleLayer.position = ccp(160.0, 160.0);*/
     
     col1.base = 0.0f;
     col1.targetheight = 75.0f;
@@ -64,6 +66,9 @@ CGPoint mY;
 }
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    
+    CGPoint touchLocation = [touch locationInNode:self];
+    touch_X = touchLocation.x;
     _pulseOn = TRUE;
     self.steam.visible = TRUE;
 }
@@ -74,25 +79,63 @@ CGPoint mY;
     self.steam.visible = FALSE;
 }
 
+-(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    CGPoint touchLocation = [touch locationInNode:self];
+    touch_X = touchLocation.x;
+    
+}
+
 -(void)update:(CCTime)delta
 {
     mY = [self.steamBot convertToWorldSpace:ccp(0, 0)];
+    
     self.steam.position = CGPointMake(mY.x,mY.y - 30);
-    
-    
-    // mY = self.steamBot.position;
     
     float distanceAboveGround = mY.y - col1.base;
     
     if (_pulseOn) {
-        [self.steamBot.physicsBody applyImpulse:CGPointMake(0, 100.0f)];
+        
+        // Calculate sideways motion
+        float sideWaysPulse;
+        if (touch_X < 160) {
+            sideWaysPulse = touch_X - 160;
+        }else {
+            sideWaysPulse = -(160 - touch_X);
+        }
+        
+        [self.steamBot.physicsBody applyImpulse:CGPointMake(sideWaysPulse, 100.0f)];
     }
     
+    // Bounce if near the ground
     if (distanceAboveGround < col1.targetheight) {
 
         [self bounce];
     }
     
+    // Follow ball on screen
+    
+    float screenHeight = self.scene.boundingBox.size.height;
+    
+    CGPoint ballPosition = [self.steamBot convertToWorldSpace:ccp(0, 0)];
+    CCLOG(@"Ball: %f",ballPosition.y);
+    
+    
+    float cY = mY.y - 100 - (screenHeight/2);
+    CCLOG(@"cY = %f",cY);
+    
+    
+    if(cY < 0)
+    {
+        cY = 0;
+    }
+    
+    // self.obstacleLayer.position = ccp(160.0, 300.0);
+    self.physicsNode.position = ccp(0, -cY);
+    // self.base.position = ccp(0, -cY);
+    CGPoint obstaclePosition = self.obstacleLayer.position;
+    CCLOG(@"Obstacle y position = %f",obstaclePosition.y);
+   
 }
 
 -(void)bounce

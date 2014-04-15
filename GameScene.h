@@ -15,8 +15,12 @@
 
 @property (nonatomic, strong) CCParticleSystem *particles;
 @property (nonatomic, strong) CCParticleSystem *steam;
-@property (nonatomic,strong)  CCNode *obstacleLayer;
-@property (nonatomic, strong) CCNode *base;
+
+@property (nonatomic, strong) CCNode *leftBorder;
+@property (nonatomic, strong) CCNode *rightBorder;
+
+@property (nonatomic, strong) CCNode *corridor;
+
 
 
 @end

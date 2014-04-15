@@ -32,6 +32,11 @@ typedef struct {
 corridor col1;
 CGPoint mY;
 float touch_X;
+CGPoint currentPhysicsPos;
+CGPoint currentCorridorPos;
+CGPoint velocity;
+
+
 
 - (void)didLoadFromCCB {
     
@@ -51,9 +56,9 @@ float touch_X;
     [self addChild:self.steam z:1];
     self.steam.visible = FALSE;
     
-    /* self.obstacleLayer = [CCBReader load:@"Corridor"];
-    [self.base addChild:self.obstacleLayer];
-    self.obstacleLayer.position = ccp(160.0, 160.0);*/
+    self.corridor = [CCBReader load:@"Corridor"];
+    [self.physicsNode addChild:self.corridor];
+    self.corridor.position = ccp(160.0, 160.0);
     
     col1.base = 0.0f;
     col1.targetheight = 75.0f;
@@ -62,6 +67,8 @@ float touch_X;
     col1.right = 320.0f;
     col1.lookahead = 4.0f; // 2.5f is the default value!! .25 very bouncy.
     
+    currentCorridorPos = [self.corridor convertToWorldSpace:ccp(0, 0)];
+    velocity = CGPointMake(.33f, .33f);
     
 }
 
@@ -71,6 +78,7 @@ float touch_X;
     touch_X = touchLocation.x;
     _pulseOn = TRUE;
     self.steam.visible = TRUE;
+    self.particles.visible = FALSE;
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
@@ -88,6 +96,8 @@ float touch_X;
 
 -(void)update:(CCTime)delta
 {
+    float screenHeight = self.scene.boundingBox.size.height;
+    
     mY = [self.steamBot convertToWorldSpace:ccp(0, 0)];
     
     self.steam.position = CGPointMake(mY.x,mY.y - 30);
@@ -104,7 +114,32 @@ float touch_X;
             sideWaysPulse = -(160 - touch_X);
         }
         
-        [self.steamBot.physicsBody applyImpulse:CGPointMake(sideWaysPulse, 100.0f)];
+        [self.steamBot.physicsBody applyImpulse:CGPointMake(sideWaysPulse, 0.0)];
+        
+        if (mY.y < screenHeight/2) {
+            [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 100.0f)];
+        }else {
+
+            currentPhysicsPos.y -= 10.0;
+            currentPhysicsPos.x = 0;
+            currentCorridorPos.y -=10.0;
+
+
+        }
+        
+    }else {
+        // _pulseOn is FALSE, ball is falling
+        if (mY.y < screenHeight/2 && currentPhysicsPos.y < 0) {
+            currentPhysicsPos.y += 10.0f;
+            currentCorridorPos.y += 10.0f;
+            if (currentPhysicsPos.y > 0) {
+                currentPhysicsPos.y = 0;
+            }
+            if (currentCorridorPos.y > 160.0) {
+                currentCorridorPos.y = 160.0;
+            }
+            
+        }
     }
     
     // Bounce if near the ground
@@ -113,29 +148,7 @@ float touch_X;
         [self bounce];
     }
     
-    // Follow ball on screen
-    
-    float screenHeight = self.scene.boundingBox.size.height;
-    
-    CGPoint ballPosition = [self.steamBot convertToWorldSpace:ccp(0, 0)];
-    CCLOG(@"Ball: %f",ballPosition.y);
-    
-    
-    float cY = mY.y - 100 - (screenHeight/2);
-    CCLOG(@"cY = %f",cY);
-    
-    
-    if(cY < 0)
-    {
-        cY = 0;
-    }
-    
-    // self.obstacleLayer.position = ccp(160.0, 300.0);
-    self.physicsNode.position = ccp(0, -cY);
-    // self.base.position = ccp(0, -cY);
-    CGPoint obstaclePosition = self.obstacleLayer.position;
-    CCLOG(@"Obstacle y position = %f",obstaclePosition.y);
-   
+    self.physicsNode.position = currentPhysicsPos;
 }
 
 -(void)bounce

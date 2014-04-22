@@ -11,6 +11,8 @@
 
 BOOL _pulseOn;
 
+#define ARC4RANDOM_MAX      0x100000000
+
 // info on where to bounce SteamBot
 
 typedef struct {
@@ -25,6 +27,20 @@ typedef struct {
 
 @interface GameScene()
 
+@property (nonatomic, strong) CCNode *steamBot;
+@property (nonatomic, strong) CCPhysicsNode *physicsNode;
+
+@property (nonatomic, strong) CCParticleSystem *particles;
+@property (nonatomic, strong) CCParticleSystem *steam;
+
+@property (nonatomic, strong) CCNode *leftBorder;
+@property (nonatomic, strong) CCNode *rightBorder;
+
+@property (nonatomic, strong) CCNode *corridor;
+@property (nonatomic, strong) CCNode *poles;
+@property (nonatomic, strong) CCNode *walls;
+@property (nonatomic, strong) NSMutableArray *obstacles;
+
 @end
 
 @implementation GameScene
@@ -35,13 +51,15 @@ float touch_X;
 CGPoint currentPhysicsPos;
 CGPoint currentCorridorPos;
 CGPoint velocity;
-
-
+CGFloat topMost;
+float screenHeight;
 
 - (void)didLoadFromCCB {
     
     // Enable touches
     self.userInteractionEnabled = TRUE;
+    
+    self.obstacles = [[NSMutableArray alloc]init];
 
     _pulseOn = FALSE;
     
@@ -56,9 +74,12 @@ CGPoint velocity;
     [self addChild:self.steam z:1];
     self.steam.visible = FALSE;
     
+    // Corridor used only once and is the first obstacle;
     self.corridor = [CCBReader load:@"Corridor"];
+    [self.obstacles addObject:self.corridor];
     [self.physicsNode addChild:self.corridor];
-    self.corridor.position = ccp(160.0, 160.0);
+    self.corridor.position = ccp(160.0, 50.0);
+    topMost = self.corridor.position.y + self.corridor.boundingBox.size.height;
     
     col1.base = 0.0f;
     col1.targetheight = 75.0f;
@@ -96,7 +117,8 @@ CGPoint velocity;
 
 -(void)update:(CCTime)delta
 {
-    float screenHeight = self.scene.boundingBox.size.height;
+    
+    screenHeight = self.scene.boundingBox.size.height;
     
     mY = [self.steamBot convertToWorldSpace:ccp(0, 0)];
     
@@ -104,6 +126,34 @@ CGPoint velocity;
     
     float distanceAboveGround = mY.y - col1.base;
     
+    
+   // Add obstacles
+    while (topMost + self.physicsNode.position.y < screenHeight) {
+        [self spawnNewObstacle];
+    }
+    
+    // If lower obstacles are off the screen, delete them
+    NSMutableArray *offScreenObstacles = nil;
+    
+    // Find off screen obstacles and add them of offScreenObstacle array
+    for (CCNode *obstacle in _obstacles) {
+        
+        CGFloat topPosition = obstacle.position.y + obstacle.boundingBox.size.height;
+        if (topPosition < abs(self.physicsNode.position.y)) {
+            if (!offScreenObstacles) {
+                offScreenObstacles = [NSMutableArray array];
+            }
+            [offScreenObstacles addObject:obstacle];
+        }
+    }
+    
+    // Remove any object in offScreenObstacles from screen and _obstacle array
+    for (CCNode *obstacleToRemove in offScreenObstacles) {
+        [obstacleToRemove removeFromParent];
+        [_obstacles removeObject:obstacleToRemove];
+    }
+    
+    // Power the ball
     if (_pulseOn) {
         
         // Calculate sideways motion
@@ -123,8 +173,6 @@ CGPoint velocity;
             currentPhysicsPos.y -= 10.0;
             currentPhysicsPos.x = 0;
             currentCorridorPos.y -=10.0;
-
-
         }
         
     }else {
@@ -168,6 +216,34 @@ CGPoint velocity;
     
     // Negate gravity
     [self.steamBot.physicsBody applyImpulse:CGPointMake(0, -gravity.y)];
+}
+
+- (void)spawnNewObstacle {
+    
+    CCNode *walls = [CCBReader load:@"Borders"];
+    walls.position = ccp(160.0, topMost);
+    [self.obstacles addObject:walls];
+    [self.physicsNode addChild:walls];
+    
+    CGFloat wPos = walls.position.y;
+    CGFloat wHeight = walls.boundingBox.size.height;
+    
+    topMost = wPos + wHeight;
+    
+    static const CGFloat maxYPosPole = 250.0f;
+    static const CGFloat minYPosPole = 70.0f;
+    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
+    CGFloat range = maxYPosPole - minYPosPole;
+    
+    CCNode *obstacle = [CCBReader load:@"Poles"];
+    obstacle.position = ccp(minYPosPole + (random * range), topMost);
+    [self.obstacles addObject:obstacle];
+    [self.physicsNode addChild:obstacle];
+    
+    CCLOG(@"# of obstacles %d",self.obstacles.count);
+    
+    topMost = obstacle.boundingBox.size.height + obstacle.position.y;
+    
 }
 
 @end

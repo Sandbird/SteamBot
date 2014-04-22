@@ -10,17 +10,4 @@
 
 @interface GameScene : CCNode
 
-@property (nonatomic, strong) CCNode *steamBot;
-@property (nonatomic, strong) CCPhysicsNode *physicsNode;
-
-@property (nonatomic, strong) CCParticleSystem *particles;
-@property (nonatomic, strong) CCParticleSystem *steam;
-
-@property (nonatomic, strong) CCNode *leftBorder;
-@property (nonatomic, strong) CCNode *rightBorder;
-
-@property (nonatomic, strong) CCNode *corridor;
-
-
-
 @end

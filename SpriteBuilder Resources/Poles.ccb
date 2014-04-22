@@ -32,7 +32,7 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>corridorLeft</string>
+				<string>leftPole</string>
 				<key>memberVarAssignmentName</key>
 				<string></string>
 				<key>memberVarAssignmentType</key>
@@ -58,16 +58,28 @@
 					<key>points</key>
 					<array>
 						<array>
-							<real>0.23046875</real>
-							<real>198.9375</real>
+							<real>-0.878936767578125</real>
+							<real>19.6640625</real>
 						</array>
 						<array>
-							<real>243</real>
+							<real>26.1171875</real>
+							<real>-1.03125</real>
+						</array>
+						<array>
+							<real>347.83200073242188</real>
+							<real>5.31640625</real>
+						</array>
+						<array>
+							<real>370.43746948242188</real>
+							<real>24.79296875</real>
+						</array>
+						<array>
+							<real>351.22262573242188</real>
+							<real>50.53125</real>
+						</array>
+						<array>
 							<real>0.0</real>
-						</array>
-						<array>
-							<real>242.55856323242188</real>
-							<real>201.15231323242188</real>
+							<real>53</real>
 						</array>
 					</array>
 				</dict>
@@ -88,8 +100,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>141</real>
-							<real>123</real>
+							<real>188</real>
+							<real>28</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -127,7 +139,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>SteamBotDoor/corridorLeft.png</string>
+							<string>SteamBotDoor/leftPole.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -153,7 +165,7 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>corridorRight</string>
+				<string>rightPole</string>
 				<key>memberVarAssignmentName</key>
 				<string></string>
 				<key>memberVarAssignmentType</key>
@@ -179,16 +191,28 @@
 					<key>points</key>
 					<array>
 						<array>
-							<real>0.0</real>
-							<real>0.0</real>
+							<real>-1.269561767578125</real>
+							<real>28.48828125</real>
 						</array>
 						<array>
-							<real>244.18359375</real>
-							<real>203.33200073242188</real>
+							<real>28.85540771484375</real>
+							<real>5.31640625</real>
 						</array>
 						<array>
-							<real>2.164031982421875</real>
-							<real>200.02731323242188</real>
+							<real>339.95697021484375</real>
+							<real>-0.24609375</real>
+						</array>
+						<array>
+							<real>376.03900146484375</real>
+							<real>20.09765625</real>
+						</array>
+						<array>
+							<real>375</real>
+							<real>53</real>
+						</array>
+						<array>
+							<real>21.464813232421875</real>
+							<real>50.09375</real>
 						</array>
 					</array>
 				</dict>
@@ -209,8 +233,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>458</real>
-							<real>123</real>
+							<real>649</real>
+							<real>31</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -224,7 +248,7 @@
 						<key>value</key>
 						<array>
 							<real>0.5</real>
-							<real>0.5</real>
+							<real>0.53854656219482422</real>
 						</array>
 					</dict>
 					<dict>
@@ -248,7 +272,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>SteamBotDoor/corridorRight.png</string>
+							<string>SteamBotDoor/rightPole.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -306,8 +330,8 @@
 				<string>Size</string>
 				<key>value</key>
 				<array>
-					<real>600</real>
-					<real>250</real>
+					<real>840</real>
+					<real>60</real>
 					<integer>0</integer>
 					<integer>0</integer>
 				</array>

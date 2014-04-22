@@ -7,20 +7,20 @@
 		<key>SteamBotDoor/SteamBot.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{645, 54}, {85, 64}}</string>
+			<string>{{714, 54}, {43, 32}}</string>
 			<key>offset</key>
-			<string>{-4, 0}</string>
+			<string>{-2, 0}</string>
 			<key>rotated</key>
-			<false/>
+			<true/>
 			<key>sourceColorRect</key>
-			<string>{{3, 18}, {85, 64}}</string>
+			<string>{{1, 9}, {43, 32}}</string>
 			<key>sourceSize</key>
-			<string>{100, 100}</string>
+			<string>{50, 50}</string>
 		</dict>
 		<key>SteamBotDoor/SteamBot_left.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{959, 224}, {64, 132}}</string>
+			<string>{{645, 187}, {64, 132}}</string>
 			<key>offset</key>
 			<string>{0, 1}</string>
 			<key>rotated</key>
@@ -33,7 +33,7 @@
 		<key>SteamBotDoor/SteamBot_right.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{645, 120}, {67, 131}}</string>
+			<string>{{645, 54}, {67, 131}}</string>
 			<key>offset</key>
 			<string>{-3, 0}</string>
 			<key>rotated</key>
@@ -46,7 +46,7 @@
 		<key>SteamBotDoor/brokenBridge_left.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{323, 338}, {113, 120}}</string>
+			<string>{{703, 447}, {113, 120}}</string>
 			<key>offset</key>
 			<string>{-4, 0}</string>
 			<key>rotated</key>
@@ -59,7 +59,7 @@
 		<key>SteamBotDoor/burner.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{645, 253}, {117, 50}}</string>
+			<string>{{956, 224}, {117, 50}}</string>
 			<key>offset</key>
 			<string>{0, 1}</string>
 			<key>rotated</key>
@@ -72,7 +72,7 @@
 		<key>SteamBotDoor/corridorLeft.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{714, 224}, {243, 221}}</string>
+			<string>{{711, 224}, {243, 221}}</string>
 			<key>offset</key>
 			<string>{0, -1}</string>
 			<key>rotated</key>
@@ -137,7 +137,7 @@
 		<key>SteamBotDoor/playButton.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{959, 358}, {200, 56}}</string>
+			<string>{{645, 321}, {200, 56}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>rotated</key>

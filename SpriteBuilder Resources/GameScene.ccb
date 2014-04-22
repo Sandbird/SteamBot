@@ -159,7 +159,7 @@
 							<key>bodyShape</key>
 							<integer>1</integer>
 							<key>cornerRadius</key>
-							<real>32.69140625</real>
+							<real>15.16796875</real>
 							<key>density</key>
 							<real>1</real>
 							<key>dynamic</key>
@@ -222,6 +222,8 @@
 								<string>SteamBot.ccb</string>
 							</dict>
 						</array>
+						<key>selected</key>
+						<true/>
 					</dict>
 					<dict>
 						<key>baseClass</key>

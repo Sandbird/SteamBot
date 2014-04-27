@@ -40,6 +40,8 @@ typedef struct {
 @property (nonatomic, strong) CCNode *poles;
 @property (nonatomic, strong) CCNode *walls;
 @property (nonatomic, strong) NSMutableArray *obstacles;
+@property (nonatomic, strong) CCNode *waterLevel;
+@property (nonatomic, strong) CCNode *steamLevel;
 
 @end
 
@@ -53,6 +55,8 @@ CGPoint currentCorridorPos;
 CGPoint velocity;
 CGFloat topMost;
 float screenHeight;
+float relativeBase;
+bool isBurning;
 
 - (void)didLoadFromCCB {
     
@@ -62,6 +66,8 @@ float screenHeight;
     self.obstacles = [[NSMutableArray alloc]init];
 
     _pulseOn = FALSE;
+    relativeBase = 0;
+    isBurning = FALSE;
     
     // Fire for device
     // particles = [CCParticleSystemQuad particleWithFile:@"fire.plist"];
@@ -95,6 +101,7 @@ float screenHeight;
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     
+    isBurning = FALSE;
     CGPoint touchLocation = [touch locationInNode:self];
     touch_X = touchLocation.x;
     _pulseOn = TRUE;
@@ -118,6 +125,8 @@ float screenHeight;
 -(void)update:(CCTime)delta
 {
     
+    delta = fminf(delta, 0.08f);
+    
     screenHeight = self.scene.boundingBox.size.height;
     
     mY = [self.steamBot convertToWorldSpace:ccp(0, 0)];
@@ -127,7 +136,26 @@ float screenHeight;
     float distanceAboveGround = mY.y - col1.base;
     
     
-   // Add obstacles
+    // Ball on burners -- increase pressure, reduce water
+    if (isBurning) {
+        
+        // Move level using time to account for different devices
+        self.steamLevel.scaleY = self.steamLevel.scaleY + (.05 * delta);
+        
+        if (self.steamLevel.scaleY > 1.0) {
+            self.steamLevel.scaleY = 1.0;
+        }
+        
+        // Reduce water in valve
+        if (self.steamLevel.scaleY < 1) {
+            self.waterLevel.scaleY = self.waterLevel.scaleY - (.01 * delta);
+        }
+        if (self.waterLevel.scaleY < 0) {
+            self.waterLevel.scaleY = 0;
+        }
+    }
+    
+    // Add obstacles
     while (topMost + self.physicsNode.position.y < screenHeight) {
         [self spawnNewObstacle];
     }
@@ -139,7 +167,7 @@ float screenHeight;
     for (CCNode *obstacle in _obstacles) {
         
         CGFloat topPosition = obstacle.position.y + obstacle.boundingBox.size.height;
-        if (topPosition < abs(self.physicsNode.position.y)) {
+        if (topPosition < abs(self.physicsNode.position.y)/2) {
             if (!offScreenObstacles) {
                 offScreenObstacles = [NSMutableArray array];
             }
@@ -149,12 +177,19 @@ float screenHeight;
     
     // Remove any object in offScreenObstacles from screen and _obstacle array
     for (CCNode *obstacleToRemove in offScreenObstacles) {
+        relativeBase = -obstacleToRemove.position.y;
         [obstacleToRemove removeFromParent];
         [_obstacles removeObject:obstacleToRemove];
     }
     
     // Power the ball
     if (_pulseOn) {
+        
+        // reduce pressure
+        self.steamLevel.scaleY = self.steamLevel.scaleY - (.05 * delta);
+        if (self.steamLevel.scaleY < 0) {
+            self.steamLevel.scaleY = 0;
+        }
         
         // Calculate sideways motion
         float sideWaysPulse;
@@ -177,7 +212,7 @@ float screenHeight;
         
     }else {
         // _pulseOn is FALSE, ball is falling
-        if (mY.y < screenHeight/2 && currentPhysicsPos.y < 0) {
+        if (mY.y < screenHeight/2 && currentPhysicsPos.y < relativeBase) {
             currentPhysicsPos.y += 10.0f;
             currentCorridorPos.y += 10.0f;
             if (currentPhysicsPos.y > 0) {
@@ -193,6 +228,7 @@ float screenHeight;
     // Bounce if near the ground
     if (distanceAboveGround < col1.targetheight) {
 
+        isBurning = TRUE;
         [self bounce];
     }
     
@@ -240,7 +276,7 @@ float screenHeight;
     [self.obstacles addObject:obstacle];
     [self.physicsNode addChild:obstacle];
     
-    CCLOG(@"# of obstacles %d",self.obstacles.count);
+    CCLOG(@"# of obstacles %lu",(unsigned long)self.obstacles.count);
     
     topMost = obstacle.boundingBox.size.height + obstacle.position.y;
     

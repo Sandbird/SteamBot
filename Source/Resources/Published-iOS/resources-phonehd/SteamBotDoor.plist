@@ -43,6 +43,19 @@
 			<key>sourceSize</key>
 			<string>{148, 290}</string>
 		</dict>
+		<key>SteamBotDoor/WaterGauge.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1910, 847}, {103, 368}}</string>
+			<key>offset</key>
+			<string>{-4, 0}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 9}, {103, 368}}</string>
+			<key>sourceSize</key>
+			<string>{113, 387}</string>
+		</dict>
 		<key>SteamBotDoor/brokenBridge_left.png</key>
 		<dict>
 			<key>frame</key>
@@ -59,11 +72,11 @@
 		<key>SteamBotDoor/burner.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{1910, 847}, {236, 100}}</string>
+			<string>{{888, 674}, {236, 100}}</string>
 			<key>offset</key>
 			<string>{0, 2}</string>
 			<key>rotated</key>
-			<true/>
+			<false/>
 			<key>sourceColorRect</key>
 			<string>{{0, 0}, {236, 100}}</string>
 			<key>sourceSize</key>

@@ -83,7 +83,7 @@ float screenHeight;
     
     col1.base = 0.0f;
     col1.targetheight = 75.0f;
-    col1.springConstant = 0.25f;
+    col1.springConstant = 0.0001f;
     col1.left = 0.0f;
     col1.right = 320.0f;
     col1.lookahead = 4.0f; // 2.5f is the default value!! .25 very bouncy.
@@ -190,10 +190,9 @@ float screenHeight;
         }
     }
     
-    // Bounce if near the ground
-    if (distanceAboveGround < col1.targetheight) {
-
-        [self bounce];
+    CGPoint speed = self.steamBot.physicsBody.velocity;
+    if (speed.y < 1.0 && speed.y > -1.0) {
+        [self.steamBot.physicsBody applyImpulse:ccp(0, 100.0f)];
     }
     
     self.physicsNode.position = currentPhysicsPos;
@@ -203,14 +202,13 @@ float screenHeight;
 {
     // float sprite_mass = self.steamBot.physicsBody.mass;
     CGPoint gravity = self.physicsNode.gravity;
-    float distanceAboveGround = mY.y - col1.base;
+    float groundDist = mY.y - col1.base;
     
     // float base = col1.base;
     float speed = _steamBot.physicsBody.velocity.y;
     float springConstant = col1.springConstant;
-    distanceAboveGround += col1.lookahead * speed;
-    float distanceAwayFromTargetHeight = col1.targetheight - distanceAboveGround;
-    
+    groundDist += col1.lookahead * speed;
+    float distanceAwayFromTargetHeight = col1.targetheight - groundDist;
     
     [self.steamBot.physicsBody applyImpulse:CGPointMake(0, springConstant * distanceAwayFromTargetHeight)];
     

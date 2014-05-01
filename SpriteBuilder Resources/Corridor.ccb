@@ -88,8 +88,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>141</real>
-							<real>123</real>
+							<real>126</real>
+							<real>128</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -209,8 +209,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>458</real>
-							<real>123</real>
+							<real>408</real>
+							<real>130</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -306,7 +306,7 @@
 				<string>Size</string>
 				<key>value</key>
 				<array>
-					<real>600</real>
+					<real>530</real>
 					<real>250</real>
 					<integer>0</integer>
 					<integer>0</integer>

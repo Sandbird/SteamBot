@@ -52,7 +52,6 @@ CGPoint mY;
 float touch_X;
 CGPoint currentPhysicsPos;
 CGPoint currentCorridorPos;
-CGPoint velocity;
 CGFloat topMost;
 float screenHeight;
 float relativeBase;
@@ -89,13 +88,12 @@ bool isBurning;
     
     col1.base = 0.0f;
     col1.targetheight = 75.0f;
-    col1.springConstant = 0.25f;
+    col1.springConstant = 0.05f;
     col1.left = 0.0f;
     col1.right = 320.0f;
-    col1.lookahead = 4.0f; // 2.5f is the default value!! .25 very bouncy.
+    col1.lookahead = 10.0f; // 2.5f is the default value!! .25 very bouncy.
     
     currentCorridorPos = [self.corridor convertToWorldSpace:ccp(0, 0)];
-    velocity = CGPointMake(.33f, .33f);
     
 }
 
@@ -225,12 +223,20 @@ bool isBurning;
         }
     }
     
-    // Bounce if near the ground
+    CCLOG(@"speed: %f", self.steamBot.physicsBody.velocity.y);
+    CGPoint speed = self.steamBot.physicsBody.velocity;
+    if (speed.y < 1.0 && speed.y > -1.0) {
+        [self.steamBot.physicsBody applyImpulse:ccp(0, 500.0f)];
+    }
+    
+    /* // Bounce if near the ground
     if (distanceAboveGround < col1.targetheight) {
 
+        // [self bounce];
+        [self.steamBot.physicsBody applyImpulse:ccp(0,100.0)];
         isBurning = TRUE;
-        [self bounce];
-    }
+    } */
+    
     
     self.physicsNode.position = currentPhysicsPos;
 }
@@ -239,19 +245,25 @@ bool isBurning;
 {
     // float sprite_mass = self.steamBot.physicsBody.mass;
     CGPoint gravity = self.physicsNode.gravity;
-    float distanceAboveGround = mY.y - col1.base;
+    float groundDist = mY.y - col1.base;
     
     // float base = col1.base;
     float speed = _steamBot.physicsBody.velocity.y;
     float springConstant = col1.springConstant;
-    distanceAboveGround += col1.lookahead * speed;
-    float distanceAwayFromTargetHeight = col1.targetheight - distanceAboveGround;
+    groundDist += col1.lookahead * speed;
+    float distanceAwayFromTargetHeight = col1.targetheight - groundDist;
     
+    CGPoint springPulse = CGPointMake(0, springConstant * distanceAwayFromTargetHeight);
     
-    [self.steamBot.physicsBody applyImpulse:CGPointMake(0, springConstant * distanceAwayFromTargetHeight)];
+    [self.steamBot.physicsBody applyImpulse:springPulse];
+    
+    CGPoint gravPulse = ccpMult(gravity, -self.steamBot.physicsBody.mass);
     
     // Negate gravity
-    [self.steamBot.physicsBody applyImpulse:CGPointMake(0, -gravity.y)];
+    [self.steamBot.physicsBody applyImpulse:gravPulse];
+    CCLOG(@"gravity: %f mass: %f",gravPulse.y,self.steamBot.physicsBody.mass);
+    CCLOG(@"Speed: %f spring: %f",speed,springPulse.y);
+    
 }
 
 - (void)spawnNewObstacle {
@@ -276,7 +288,7 @@ bool isBurning;
     [self.obstacles addObject:obstacle];
     [self.physicsNode addChild:obstacle];
     
-    CCLOG(@"# of obstacles %lu",(unsigned long)self.obstacles.count);
+    // CCLOG(@"# of obstacles %lu",(unsigned long)self.obstacles.count);
     
     topMost = obstacle.boundingBox.size.height + obstacle.position.y;
     

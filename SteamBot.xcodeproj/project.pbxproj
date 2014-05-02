@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3611162418F3233F00C8EB44 /* burnerFire.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3611162318F3233F00C8EB44 /* burnerFire.plist */; };
+		3627B89A1913EE260009CF49 /* Obstacle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3627B8991913EE260009CF49 /* Obstacle.m */; };
 		36F88C8B18F628DB001F0A8F /* steamEffect.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36F88C8A18F628DB001F0A8F /* steamEffect.plist */; };
 		36FA3D3218F0B7E4006CCA7E /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FA3D3118F0B7E4006CCA7E /* GameScene.m */; };
 		36FA3D3A18F120BF006CCA7E /* SteamBot.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FA3D3918F120BF006CCA7E /* SteamBot.m */; };
@@ -60,6 +61,8 @@
 
 /* Begin PBXFileReference section */
 		3611162318F3233F00C8EB44 /* burnerFire.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = burnerFire.plist; sourceTree = "<group>"; };
+		3627B8981913EE260009CF49 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
+		3627B8991913EE260009CF49 /* Obstacle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Obstacle.m; sourceTree = "<group>"; };
 		36F88C8A18F628DB001F0A8F /* steamEffect.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = steamEffect.plist; sourceTree = "<group>"; };
 		36FA3D3018F0B7E4006CCA7E /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		36FA3D3118F0B7E4006CCA7E /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
@@ -138,6 +141,8 @@
 				B7378993180767190076A88C /* MainScene.m */,
 				36FA3D3018F0B7E4006CCA7E /* GameScene.h */,
 				36FA3D3118F0B7E4006CCA7E /* GameScene.m */,
+				3627B8981913EE260009CF49 /* Obstacle.h */,
+				3627B8991913EE260009CF49 /* Obstacle.m */,
 				36FA3D3818F120BF006CCA7E /* SteamBot.h */,
 				36FA3D3918F120BF006CCA7E /* SteamBot.m */,
 			);
@@ -340,6 +345,7 @@
 				B7378994180767190076A88C /* MainScene.m in Sources */,
 				36FA3D3A18F120BF006CCA7E /* SteamBot.m in Sources */,
 				36FA3D3218F0B7E4006CCA7E /* GameScene.m in Sources */,
+				3627B89A1913EE260009CF49 /* Obstacle.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -222,8 +222,6 @@
 								<string>SteamBot.ccb</string>
 							</dict>
 						</array>
-						<key>selected</key>
-						<true/>
 					</dict>
 					<dict>
 						<key>baseClass</key>
@@ -267,12 +265,12 @@
 									<real>0.0</real>
 								</array>
 								<array>
-									<real>118.33203125</real>
-									<real>64.8203125</real>
+									<real>117.69140625</real>
+									<real>38.94140625</real>
 								</array>
 								<array>
-									<real>1.55859375</real>
-									<real>63.296875</real>
+									<real>3.95703125</real>
+									<real>38.2890625</real>
 								</array>
 							</array>
 						</dict>
@@ -349,6 +347,8 @@
 								</array>
 							</dict>
 						</array>
+						<key>selected</key>
+						<true/>
 					</dict>
 				</array>
 				<key>customClass</key>

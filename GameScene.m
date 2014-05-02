@@ -8,6 +8,7 @@
 
 #import "GameScene.h"
 #import "SteamBot.h"
+#import "Obstacle.h"
 
 BOOL _pulseOn;
 
@@ -223,25 +224,24 @@ bool isBurning;
         }
     }
     
-    CCLOG(@"speed: %f", self.steamBot.physicsBody.velocity.y);
-    CGPoint speed = self.steamBot.physicsBody.velocity;
+    /* CGPoint speed = self.steamBot.physicsBody.velocity;
     if (speed.y < 1.0 && speed.y > -1.0) {
         [self.steamBot.physicsBody applyImpulse:ccp(0, 500.0f)];
-    }
+    }*/
     
-    /* // Bounce if near the ground
+    // Bounce if near the ground
     if (distanceAboveGround < col1.targetheight) {
 
         // [self bounce];
         [self.steamBot.physicsBody applyImpulse:ccp(0,100.0)];
         isBurning = TRUE;
-    } */
+    }
     
     
     self.physicsNode.position = currentPhysicsPos;
 }
 
--(void)bounce
+ -(void)bounce
 {
     // float sprite_mass = self.steamBot.physicsBody.mass;
     CGPoint gravity = self.physicsNode.gravity;
@@ -261,9 +261,6 @@ bool isBurning;
     
     // Negate gravity
     [self.steamBot.physicsBody applyImpulse:gravPulse];
-    CCLOG(@"gravity: %f mass: %f",gravPulse.y,self.steamBot.physicsBody.mass);
-    CCLOG(@"Speed: %f spring: %f",speed,springPulse.y);
-    
 }
 
 - (void)spawnNewObstacle {
@@ -278,17 +275,14 @@ bool isBurning;
     
     topMost = wPos + wHeight;
     
-    static const CGFloat maxYPosPole = 250.0f;
-    static const CGFloat minYPosPole = 70.0f;
-    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
-    CGFloat range = maxYPosPole - minYPosPole;
+    Obstacle *obstacle = (Obstacle *)[CCBReader load:@"Poles"];
     
-    CCNode *obstacle = [CCBReader load:@"Poles"];
-    obstacle.position = ccp(minYPosPole + (random * range), topMost);
+    [obstacle setupRandomPosition];
+    CCLOG(@"rightPole Y pos: %f, leftPole Y pos: %f",obstacle.leftPole.position.x,obstacle.rightPole.position.x);
+    
+    obstacle.position = ccp(160.0f, topMost);
     [self.obstacles addObject:obstacle];
     [self.physicsNode addChild:obstacle];
-    
-    // CCLOG(@"# of obstacles %lu",(unsigned long)self.obstacles.count);
     
     topMost = obstacle.boundingBox.size.height + obstacle.position.y;
     

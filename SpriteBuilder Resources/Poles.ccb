@@ -34,9 +34,9 @@
 				<key>displayName</key>
 				<string>leftPole</string>
 				<key>memberVarAssignmentName</key>
-				<string></string>
+				<string>_leftPole</string>
 				<key>memberVarAssignmentType</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>physicsBody</key>
 				<dict>
 					<key>affectedByGravity</key>
@@ -58,28 +58,28 @@
 					<key>points</key>
 					<array>
 						<array>
-							<real>-0.878936767578125</real>
-							<real>19.6640625</real>
+							<real>-3.04296875</real>
+							<real>15.96484375</real>
 						</array>
 						<array>
-							<real>26.1171875</real>
-							<real>-1.03125</real>
+							<real>12.746063232421875</real>
+							<real>2.80859375</real>
 						</array>
 						<array>
-							<real>347.83200073242188</real>
-							<real>5.31640625</real>
+							<real>357.76171875</real>
+							<real>3.9375</real>
 						</array>
 						<array>
-							<real>370.43746948242188</real>
-							<real>24.79296875</real>
+							<real>370.69140625</real>
+							<real>11.15234375</real>
 						</array>
 						<array>
-							<real>351.22262573242188</real>
-							<real>50.53125</real>
+							<real>357.53515625</real>
+							<real>21.23046875</real>
 						</array>
 						<array>
-							<real>0.0</real>
-							<real>53</real>
+							<real>8.30859375</real>
+							<real>24.76171875</real>
 						</array>
 					</array>
 				</dict>
@@ -100,8 +100,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>188</real>
-							<real>28</real>
+							<real>365</real>
+							<real>15</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -114,7 +114,7 @@
 						<string>Point</string>
 						<key>value</key>
 						<array>
-							<real>0.5</real>
+							<real>1</real>
 							<real>0.5</real>
 						</array>
 					</dict>
@@ -167,9 +167,9 @@
 				<key>displayName</key>
 				<string>rightPole</string>
 				<key>memberVarAssignmentName</key>
-				<string></string>
+				<string>_rightPole</string>
 				<key>memberVarAssignmentType</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>physicsBody</key>
 				<dict>
 					<key>affectedByGravity</key>
@@ -191,28 +191,24 @@
 					<key>points</key>
 					<array>
 						<array>
-							<real>-1.269561767578125</real>
-							<real>28.48828125</real>
+							<real>0.9140625</real>
+							<real>13.631633758544922</real>
 						</array>
 						<array>
-							<real>28.85540771484375</real>
-							<real>5.31640625</real>
+							<real>15.12109375</real>
+							<real>5.0613212585449219</real>
 						</array>
 						<array>
-							<real>339.95697021484375</real>
-							<real>-0.24609375</real>
+							<real>366.078125</real>
+							<real>5.4363212585449219</real>
 						</array>
 						<array>
-							<real>376.03900146484375</real>
-							<real>20.09765625</real>
+							<real>364.80078125</real>
+							<real>19.045696258544922</real>
 						</array>
 						<array>
-							<real>375</real>
-							<real>53</real>
-						</array>
-						<array>
-							<real>21.464813232421875</real>
-							<real>50.09375</real>
+							<real>10.234375</real>
+							<real>21.451946258544922</real>
 						</array>
 					</array>
 				</dict>
@@ -233,8 +229,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>649</real>
-							<real>31</real>
+							<real>470</real>
+							<real>15</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -247,8 +243,8 @@
 						<string>Point</string>
 						<key>value</key>
 						<array>
+							<real>0.0</real>
 							<real>0.5</real>
-							<real>0.53854656219482422</real>
 						</array>
 					</dict>
 					<dict>
@@ -292,7 +288,7 @@
 			</dict>
 		</array>
 		<key>customClass</key>
-		<string></string>
+		<string>Obstacle</string>
 		<key>displayName</key>
 		<string>CCNode</string>
 		<key>memberVarAssignmentName</key>
@@ -331,7 +327,7 @@
 				<key>value</key>
 				<array>
 					<real>840</real>
-					<real>60</real>
+					<real>30</real>
 					<integer>0</integer>
 					<integer>0</integer>
 				</array>

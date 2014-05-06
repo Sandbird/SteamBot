@@ -17,10 +17,7 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
 // distance between top and bottom pipe
 static const CGFloat poleDistance = 80.0f;
 
-@implementation Obstacle{
-    //CCNode *_rightPole;
-    //CCNode *_leftPole;
-}
+@implementation Obstacle
 
 - (void)didLoadFromCCB {
 }

@@ -9,6 +9,7 @@
 #import "GameScene.h"
 #import "SteamBot.h"
 #import "Obstacle.h"
+#import "ObstacleInfo.h"
 
 BOOL _pulseOn;
 
@@ -54,11 +55,14 @@ float touch_X;
 CGPoint currentPhysicsPos;
 CGPoint currentCorridorPos;
 CGFloat topMost;
+CGFloat bottomMost;
 float screenHeight;
 float relativeBase;
 bool isBurning;
 
 - (void)didLoadFromCCB {
+    
+    ObstacleInfo *oInfo = [ObstacleInfo alloc];
     
     // Enable touches
     self.userInteractionEnabled = TRUE;
@@ -82,17 +86,24 @@ bool isBurning;
     
     // Corridor used only once and is the first obstacle;
     self.corridor = [CCBReader load:@"Corridor"];
-    [self.obstacles addObject:self.corridor];
+    
+    
     [self.physicsNode addChild:self.corridor];
     self.corridor.position = ccp(160.0, 50.0);
+    [self.obstacles addObject:self.corridor];
+    
+    oInfo.index = 0;
+    oInfo.objectPosition = self.corridor.position;
+    oInfo.objectHeight = self.corridor.boundingBox.size.height;
+    
     topMost = self.corridor.position.y + self.corridor.boundingBox.size.height;
     
     col1.base = 0.0f;
     col1.targetheight = 75.0f;
-    col1.springConstant = 0.05f;
+    col1.springConstant = .00001f;
     col1.left = 0.0f;
     col1.right = 320.0f;
-    col1.lookahead = 10.0f; // 2.5f is the default value!! .25 very bouncy.
+    col1.lookahead = .25f; // 2.5f is the default value!! .25 very bouncy.
     
     currentCorridorPos = [self.corridor convertToWorldSpace:ccp(0, 0)];
     
@@ -165,7 +176,9 @@ bool isBurning;
     // Find off screen obstacles and add them of offScreenObstacle array
     for (CCNode *obstacle in _obstacles) {
         
-        CGFloat topPosition = obstacle.position.y + obstacle.boundingBox.size.height;
+        // CGFloat topPosition = obstacle.position.y + obstacle.boundingBox.size.height;
+        CGFloat topPosition = obstacle.position.y +
+        obstacle.boundingBox.size.height;
         if (topPosition < abs(self.physicsNode.position.y)/2) {
             if (!offScreenObstacles) {
                 offScreenObstacles = [NSMutableArray array];
@@ -232,8 +245,7 @@ bool isBurning;
     // Bounce if near the ground
     if (distanceAboveGround < col1.targetheight) {
 
-        // [self bounce];
-        [self.steamBot.physicsBody applyImpulse:ccp(0,100.0)];
+        [self bounce];
         isBurning = TRUE;
     }
     
@@ -257,30 +269,37 @@ bool isBurning;
     
     [self.steamBot.physicsBody applyImpulse:springPulse];
     
-    CGPoint gravPulse = ccpMult(gravity, -self.steamBot.physicsBody.mass);
+    CGPoint gravPulse = ccpMult(gravity, -self.steamBot.physicsBody.mass/4);
+    
+    // Reduce pulse depending on speed of steamBot
+    gravPulse.y = gravPulse.y - self.steamBot.physicsBody.velocity.y;
     
     // Negate gravity
     [self.steamBot.physicsBody applyImpulse:gravPulse];
+    
+
 }
 
 - (void)spawnNewObstacle {
     
     CCNode *walls = [CCBReader load:@"Borders"];
     walls.position = ccp(160.0, topMost);
+    Obstacle *lastObstacle;
+    lastObstacle = [self.obstacles lastObject];
+    
     [self.obstacles addObject:walls];
     [self.physicsNode addChild:walls];
     
     CGFloat wPos = walls.position.y;
     CGFloat wHeight = walls.boundingBox.size.height;
-    
     topMost = wPos + wHeight;
     
     Obstacle *obstacle = (Obstacle *)[CCBReader load:@"Poles"];
-    
     [obstacle setupRandomPosition];
-    CCLOG(@"rightPole Y pos: %f, leftPole Y pos: %f",obstacle.leftPole.position.x,obstacle.rightPole.position.x);
     
+    lastObstacle = [self.obstacles lastObject];
     obstacle.position = ccp(160.0f, topMost);
+    
     [self.obstacles addObject:obstacle];
     [self.physicsNode addChild:obstacle];
     

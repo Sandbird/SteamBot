@@ -59,24 +59,24 @@
 		<key>SteamBotDoor/brokenBridge_left.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{1, 903}, {227, 243}}</string>
+			<string>{{1, 608}, {483, 248}}</string>
 			<key>offset</key>
-			<string>{-8, 0}</string>
+			<string>{-8, -2}</string>
 			<key>rotated</key>
-			<true/>
+			<false/>
 			<key>sourceColorRect</key>
-			<string>{{0, 12}, {227, 243}}</string>
+			<string>{{0, 12}, {483, 248}}</string>
 			<key>sourceSize</key>
-			<string>{244, 269}</string>
+			<string>{500, 269}</string>
 		</dict>
 		<key>SteamBotDoor/burner.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{639, 644}, {236, 100}}</string>
+			<string>{{486, 608}, {236, 100}}</string>
 			<key>offset</key>
 			<string>{0, 2}</string>
 			<key>rotated</key>
-			<false/>
+			<true/>
 			<key>sourceColorRect</key>
 			<string>{{0, 0}, {236, 100}}</string>
 			<key>sourceSize</key>
@@ -137,7 +137,7 @@
 		<key>SteamBotDoor/leftCorridor.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{1, 608}, {293, 341}}</string>
+			<string>{{588, 644}, {293, 341}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>rotated</key>
@@ -176,11 +176,11 @@
 		<key>SteamBotDoor/rightCorridor.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{344, 608}, {293, 341}}</string>
+			<string>{{931, 644}, {293, 341}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>rotated</key>
-			<false/>
+			<true/>
 			<key>sourceColorRect</key>
 			<string>{{0, 0}, {293, 341}}</string>
 			<key>sourceSize</key>

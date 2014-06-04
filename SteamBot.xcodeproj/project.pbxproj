@@ -10,6 +10,7 @@
 		3611162418F3233F00C8EB44 /* burnerFire.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3611162318F3233F00C8EB44 /* burnerFire.plist */; };
 		3627B89A1913EE260009CF49 /* Obstacle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3627B8991913EE260009CF49 /* Obstacle.m */; };
 		368CAAA7191475A100E2EA99 /* ObstacleInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 368CAAA6191475A000E2EA99 /* ObstacleInfo.m */; };
+		36F451C31919BBD600A7CB29 /* Tunnels.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F451C21919BBD600A7CB29 /* Tunnels.m */; };
 		36F88C8B18F628DB001F0A8F /* steamEffect.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36F88C8A18F628DB001F0A8F /* steamEffect.plist */; };
 		36FA3D3218F0B7E4006CCA7E /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FA3D3118F0B7E4006CCA7E /* GameScene.m */; };
 		36FA3D3A18F120BF006CCA7E /* SteamBot.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FA3D3918F120BF006CCA7E /* SteamBot.m */; };
@@ -66,6 +67,8 @@
 		3627B8991913EE260009CF49 /* Obstacle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Obstacle.m; sourceTree = "<group>"; };
 		368CAAA5191475A000E2EA99 /* ObstacleInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObstacleInfo.h; sourceTree = "<group>"; };
 		368CAAA6191475A000E2EA99 /* ObstacleInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObstacleInfo.m; sourceTree = "<group>"; };
+		36F451C11919BBD600A7CB29 /* Tunnels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tunnels.h; sourceTree = "<group>"; };
+		36F451C21919BBD600A7CB29 /* Tunnels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tunnels.m; sourceTree = "<group>"; };
 		36F88C8A18F628DB001F0A8F /* steamEffect.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = steamEffect.plist; sourceTree = "<group>"; };
 		36FA3D3018F0B7E4006CCA7E /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		36FA3D3118F0B7E4006CCA7E /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
@@ -150,6 +153,8 @@
 				3627B8991913EE260009CF49 /* Obstacle.m */,
 				36FA3D3818F120BF006CCA7E /* SteamBot.h */,
 				36FA3D3918F120BF006CCA7E /* SteamBot.m */,
+				36F451C11919BBD600A7CB29 /* Tunnels.h */,
+				36F451C21919BBD600A7CB29 /* Tunnels.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -351,6 +356,7 @@
 				36FA3D3A18F120BF006CCA7E /* SteamBot.m in Sources */,
 				36FA3D3218F0B7E4006CCA7E /* GameScene.m in Sources */,
 				3627B89A1913EE260009CF49 /* Obstacle.m in Sources */,
+				36F451C31919BBD600A7CB29 /* Tunnels.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 				368CAAA7191475A100E2EA99 /* ObstacleInfo.m in Sources */,
 			);

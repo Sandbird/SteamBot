@@ -20,6 +20,12 @@ static const CGFloat poleDistance = 80.0f;
 @implementation Obstacle
 
 - (void)didLoadFromCCB {
+    self.settings = [[NSMutableArray alloc]init];
+}
+
+-(void)restorePosition:(NSMutableArray *)restoreSettings{
+    _leftPole = [restoreSettings objectAtIndex:0];
+    _rightPole = [restoreSettings objectAtIndex:1];
 }
 
 - (void)setupRandomPosition {
@@ -29,7 +35,13 @@ static const CGFloat poleDistance = 80.0f;
     CGFloat range = maximumXPositionLeftPole - minimumXPositionLeftPole;
     _leftPole.position = ccp(minimumXPositionLeftPole + (random * range), _leftPole.position.y);
     _rightPole.position = ccp(_leftPole.position.x + poleDistance, _rightPole.position.y);
+    
+    // Remember these settings for later
+    [self.settings addObject:_leftPole];
+    [self.settings addObject:_rightPole];
+    
 }
+
 
 @end
 

@@ -32,9 +32,9 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>leftPole</string>
+				<string>brokenBridge_left</string>
 				<key>memberVarAssignmentName</key>
-				<string>_leftPole</string>
+				<string>_leftBridge</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>physicsBody</key>
@@ -58,28 +58,28 @@
 					<key>points</key>
 					<array>
 						<array>
-							<real>-3.04296875</real>
-							<real>15.96484375</real>
+							<real>0.0</real>
+							<real>0.0</real>
 						</array>
 						<array>
-							<real>12.746063232421875</real>
-							<real>2.80859375</real>
+							<real>199.02734375</real>
+							<real>11.76953125</real>
 						</array>
 						<array>
-							<real>357.76171875</real>
-							<real>3.9375</real>
+							<real>234.1328125</real>
+							<real>103.44140625</real>
 						</array>
 						<array>
-							<real>370.69140625</real>
-							<real>11.15234375</real>
+							<real>226.7109375</real>
+							<real>118.55859375</real>
 						</array>
 						<array>
-							<real>357.53515625</real>
-							<real>21.23046875</real>
+							<real>13.94140625</real>
+							<real>102.6953125</real>
 						</array>
 						<array>
-							<real>8.30859375</real>
-							<real>24.76171875</real>
+							<real>1.28125</real>
+							<real>100.1015625</real>
 						</array>
 					</array>
 				</dict>
@@ -100,8 +100,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>365</real>
-							<real>90</real>
+							<real>252</real>
+							<real>139</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -139,7 +139,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>SteamBotDoor/leftPole.png</string>
+							<string>SteamBotDoor/brokenBridge_left.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -165,9 +165,9 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>rightPole</string>
+				<string>brokenBridge_left</string>
 				<key>memberVarAssignmentName</key>
-				<string>_rightPole</string>
+				<string>_rightBridge</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>physicsBody</key>
@@ -191,24 +191,20 @@
 					<key>points</key>
 					<array>
 						<array>
-							<real>0.9140625</real>
-							<real>13.631633758544922</real>
+							<real>0.65234321355819702</real>
+							<real>6.2968597412109375</real>
 						</array>
 						<array>
-							<real>15.12109375</real>
-							<real>5.0613212585449219</real>
+							<real>209.0625</real>
+							<real>16.972660064697266</real>
 						</array>
 						<array>
-							<real>366.078125</real>
-							<real>5.4363212585449219</real>
+							<real>242.36717224121094</real>
+							<real>123.88672637939453</real>
 						</array>
 						<array>
-							<real>364.80078125</real>
-							<real>19.045696258544922</real>
-						</array>
-						<array>
-							<real>10.234375</real>
-							<real>21.451946258544922</real>
+							<real>1.5546786785125732</real>
+							<real>101.55857849121094</real>
 						</array>
 					</array>
 				</dict>
@@ -229,8 +225,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>470</real>
-							<real>92</real>
+							<real>298</real>
+							<real>132</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -243,7 +239,7 @@
 						<string>Point</string>
 						<key>value</key>
 						<array>
-							<real>0.0</real>
+							<real>1</real>
 							<real>0.5</real>
 						</array>
 					</dict>
@@ -262,13 +258,21 @@
 					</dict>
 					<dict>
 						<key>name</key>
+						<string>rotation</string>
+						<key>type</key>
+						<string>Degrees</string>
+						<key>value</key>
+						<real>180</real>
+					</dict>
+					<dict>
+						<key>name</key>
 						<string>spriteFrame</string>
 						<key>type</key>
 						<string>SpriteFrame</string>
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>SteamBotDoor/rightPole.png</string>
+							<string>SteamBotDoor/brokenBridge_left.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -354,154 +358,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>250</real>
-							<real>1</real>
-							<integer>0</integer>
-							<integer>0</integer>
-							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>contentSize</string>
-						<key>type</key>
-						<string>Size</string>
-						<key>value</key>
-						<array>
-							<real>10</real>
-							<real>80</real>
-							<integer>0</integer>
-							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>anchorPoint</string>
-						<key>type</key>
-						<string>Point</string>
-						<key>value</key>
-						<array>
-							<real>0.0</real>
-							<real>0.0</real>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>scale</string>
-						<key>type</key>
-						<string>ScaleLock</string>
-						<key>value</key>
-						<array>
-							<real>1</real>
-							<real>1</real>
-							<false/>
-							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>color</string>
-						<key>type</key>
-						<string>Color3</string>
-						<key>value</key>
-						<array>
-							<real>0.20999999344348907</real>
-							<real>0.64999997615814209</real>
-							<real>0.87000000476837158</real>
-							<real>1</real>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>opacity</string>
-						<key>type</key>
-						<string>Float</string>
-						<key>value</key>
-						<real>1</real>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>blendFunc</string>
-						<key>type</key>
-						<string>Blendmode</string>
-						<key>value</key>
-						<array>
-							<integer>770</integer>
-							<integer>771</integer>
-						</array>
-					</dict>
-				</array>
-			</dict>
-			<dict>
-				<key>baseClass</key>
-				<string>CCNodeColor</string>
-				<key>children</key>
-				<array/>
-				<key>customClass</key>
-				<string></string>
-				<key>displayName</key>
-				<string>CCNodeColor</string>
-				<key>memberVarAssignmentName</key>
-				<string></string>
-				<key>memberVarAssignmentType</key>
-				<integer>0</integer>
-				<key>physicsBody</key>
-				<dict>
-					<key>affectedByGravity</key>
-					<true/>
-					<key>allowsRotation</key>
-					<true/>
-					<key>bodyShape</key>
-					<integer>0</integer>
-					<key>cornerRadius</key>
-					<real>0.0</real>
-					<key>density</key>
-					<real>1</real>
-					<key>dynamic</key>
-					<false/>
-					<key>elasticity</key>
-					<real>0.30000001192092896</real>
-					<key>friction</key>
-					<real>0.30000001192092896</real>
-					<key>points</key>
-					<array>
-						<array>
-							<real>0.0</real>
-							<real>0.0</real>
-						</array>
-						<array>
-							<real>0.0</real>
-							<real>80</real>
-						</array>
-						<array>
-							<real>10</real>
-							<real>80</real>
-						</array>
-						<array>
-							<real>10</real>
-							<real>0.0</real>
-						</array>
-					</array>
-				</dict>
-				<key>properties</key>
-				<array>
-					<dict>
-						<key>name</key>
-						<string>name</string>
-						<key>type</key>
-						<string>StringSimple</string>
-						<key>value</key>
-						<string></string>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>position</string>
-						<key>type</key>
-						<string>Position</string>
-						<key>value</key>
-						<array>
-							<real>590</real>
-							<real>1</real>
+							<real>100</real>
+							<real>-1</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -580,9 +438,155 @@
 				<key>selected</key>
 				<true/>
 			</dict>
+			<dict>
+				<key>baseClass</key>
+				<string>CCNodeColor</string>
+				<key>children</key>
+				<array/>
+				<key>customClass</key>
+				<string></string>
+				<key>displayName</key>
+				<string>CCNodeColor</string>
+				<key>memberVarAssignmentName</key>
+				<string></string>
+				<key>memberVarAssignmentType</key>
+				<integer>0</integer>
+				<key>physicsBody</key>
+				<dict>
+					<key>affectedByGravity</key>
+					<true/>
+					<key>allowsRotation</key>
+					<true/>
+					<key>bodyShape</key>
+					<integer>0</integer>
+					<key>cornerRadius</key>
+					<real>0.0</real>
+					<key>density</key>
+					<real>1</real>
+					<key>dynamic</key>
+					<false/>
+					<key>elasticity</key>
+					<real>0.30000001192092896</real>
+					<key>friction</key>
+					<real>0.30000001192092896</real>
+					<key>points</key>
+					<array>
+						<array>
+							<real>0.0</real>
+							<real>0.0</real>
+						</array>
+						<array>
+							<real>0.0</real>
+							<real>80</real>
+						</array>
+						<array>
+							<real>10</real>
+							<real>80</real>
+						</array>
+						<array>
+							<real>10</real>
+							<real>0.0</real>
+						</array>
+					</array>
+				</dict>
+				<key>properties</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>name</string>
+						<key>type</key>
+						<string>StringSimple</string>
+						<key>value</key>
+						<string></string>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>position</string>
+						<key>type</key>
+						<string>Position</string>
+						<key>value</key>
+						<array>
+							<real>445</real>
+							<real>-1</real>
+							<integer>0</integer>
+							<integer>0</integer>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>contentSize</string>
+						<key>type</key>
+						<string>Size</string>
+						<key>value</key>
+						<array>
+							<real>10</real>
+							<real>80</real>
+							<integer>0</integer>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>anchorPoint</string>
+						<key>type</key>
+						<string>Point</string>
+						<key>value</key>
+						<array>
+							<real>0.0</real>
+							<real>0.0</real>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>scale</string>
+						<key>type</key>
+						<string>ScaleLock</string>
+						<key>value</key>
+						<array>
+							<real>1</real>
+							<real>1</real>
+							<false/>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>color</string>
+						<key>type</key>
+						<string>Color3</string>
+						<key>value</key>
+						<array>
+							<real>0.20999999344348907</real>
+							<real>0.64999997615814209</real>
+							<real>0.87000000476837158</real>
+							<real>1</real>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>opacity</string>
+						<key>type</key>
+						<string>Float</string>
+						<key>value</key>
+						<real>1</real>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>blendFunc</string>
+						<key>type</key>
+						<string>Blendmode</string>
+						<key>value</key>
+						<array>
+							<integer>770</integer>
+							<integer>771</integer>
+						</array>
+					</dict>
+				</array>
+			</dict>
 		</array>
 		<key>customClass</key>
-		<string>Obstacle</string>
+		<string>Tunnels</string>
 		<key>displayName</key>
 		<string>CCNode</string>
 		<key>memberVarAssignmentName</key>
@@ -620,8 +624,8 @@
 				<string>Size</string>
 				<key>value</key>
 				<array>
-					<real>840</real>
-					<real>110</real>
+					<real>550</real>
+					<real>210</real>
 					<integer>0</integer>
 					<integer>0</integer>
 				</array>
@@ -706,7 +710,7 @@
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>0.0</real>
+			<real>1.5666667222976685</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

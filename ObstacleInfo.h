@@ -10,9 +10,12 @@
 
 @interface ObstacleInfo : NSObject
 
-@property (nonatomic,readwrite)NSInteger index;
+@property (nonatomic,readwrite)NSInteger obstacleType;
+@property (nonatomic, readwrite)NSInteger positionInArray;
 @property (nonatomic,readwrite)CGPoint objectPosition;
 @property (nonatomic, readwrite)CGFloat objectHeight;
-@property (nonatomic, readwrite)NSInteger whichObstacle;
+@property (nonatomic, readwrite)BOOL obstacleInLayer;
+@property (nonatomic, readwrite)BOOL obstacleOnScreen;
+@property (nonatomic, strong) NSMutableArray *settings;
 
 @end

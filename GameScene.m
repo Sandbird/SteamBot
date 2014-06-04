@@ -10,6 +10,7 @@
 #import "SteamBot.h"
 #import "Obstacle.h"
 #import "ObstacleInfo.h"
+#import "Tunnels.h"
 
 BOOL _pulseOn;
 
@@ -42,6 +43,8 @@ typedef struct {
 @property (nonatomic, strong) CCNode *poles;
 @property (nonatomic, strong) CCNode *walls;
 @property (nonatomic, strong) NSMutableArray *obstacles;
+@property (nonatomic, strong) NSMutableArray *obstacleLibrary;
+@property (nonatomic, strong) NSMutableArray *obstacleList;
 @property (nonatomic, strong) CCNode *waterLevel;
 @property (nonatomic, strong) CCNode *steamLevel;
 
@@ -60,18 +63,20 @@ float screenHeight;
 float relativeBase;
 bool isBurning;
 
+
 - (void)didLoadFromCCB {
-    
-    ObstacleInfo *oInfo = [ObstacleInfo alloc];
-    
+        
     // Enable touches
     self.userInteractionEnabled = TRUE;
     
     self.obstacles = [[NSMutableArray alloc]init];
+    self.obstacleLibrary = [[NSMutableArray alloc]init];
+    self.obstacleList = [NSMutableArray array];
 
     _pulseOn = FALSE;
     relativeBase = 0;
     isBurning = FALSE;
+    bottomMost = 0;
     
     // Fire for device
     // particles = [CCParticleSystemQuad particleWithFile:@"fire.plist"];
@@ -84,17 +89,19 @@ bool isBurning;
     [self addChild:self.steam z:1];
     self.steam.visible = FALSE;
     
+    // Load corridor and poles names
+    [self.obstacleLibrary addObject:@"Corridor"];
+    [self.obstacleLibrary addObject:@"Poles"];
+    [self.obstacleLibrary addObject:@"Tunnels"];
+    
     // Corridor used only once and is the first obstacle;
-    self.corridor = [CCBReader load:@"Corridor"];
+    NSString *corrString = [self.obstacleLibrary objectAtIndex:0];
+    self.corridor = [CCBReader load:corrString];
     
     
     [self.physicsNode addChild:self.corridor];
     self.corridor.position = ccp(160.0, 50.0);
-    [self.obstacles addObject:self.corridor];
-    
-    oInfo.index = 0;
-    oInfo.objectPosition = self.corridor.position;
-    oInfo.objectHeight = self.corridor.boundingBox.size.height;
+    // [self.obstacles addObject:self.corridor];
     
     topMost = self.corridor.position.y + self.corridor.boundingBox.size.height;
     
@@ -170,28 +177,57 @@ bool isBurning;
         [self spawnNewObstacle];
     }
     
-    // If lower obstacles are off the screen, delete them
-    NSMutableArray *offScreenObstacles = nil;
+    // TODO: Change method of tracking obstacles on and off screen
     
-    // Find off screen obstacles and add them of offScreenObstacle array
-    for (CCNode *obstacle in _obstacles) {
+    // If obstacles are off the screen, delete them
+    NSMutableArray *offScreenObstacles = nil;
+    NSMutableArray *onScreenObstacles = nil;
+    
+    // Obstacles to delete or to replace
+    for (ObstacleInfo *obstInfo in self.obstacleList) {
         
-        // CGFloat topPosition = obstacle.position.y + obstacle.boundingBox.size.height;
-        CGFloat topPosition = obstacle.position.y +
-        obstacle.boundingBox.size.height;
-        if (topPosition < abs(self.physicsNode.position.y)/2) {
+        Obstacle *obstacle;
+        
+        BOOL obstacleIsOffScreen = [self obstacleOffScreen:obstInfo];
+        
+        // Should obstacle be restored?
+        if (!obstInfo.obstacleInLayer && !obstacleIsOffScreen) {
+            // Replace obstacle to position
+            // [self restoreObstacle:obstInfo];
+            if (!onScreenObstacles) {
+                onScreenObstacles = [NSMutableArray array];
+            }
+            [onScreenObstacles addObject:obstInfo];
+            
+        } else if (obstInfo.obstacleInLayer && obstacleIsOffScreen) {
+            // obstacle is on layer and is offscreen (both required)
+            obstInfo.obstacleInLayer = NO; // Mark obstacle as off layer
+            for (Obstacle *obstacleToCheck in self.obstacles) {
+                if (obstacleToCheck.position.y == obstInfo.objectPosition.y) {
+                    obstacle = obstacleToCheck;
+                }
+            }
+            
             if (!offScreenObstacles) {
                 offScreenObstacles = [NSMutableArray array];
             }
             [offScreenObstacles addObject:obstacle];
+            
         }
+        
     }
     
     // Remove any object in offScreenObstacles from screen and _obstacle array
     for (CCNode *obstacleToRemove in offScreenObstacles) {
-        relativeBase = -obstacleToRemove.position.y;
+        // relativeBase = -obstacleToRemove.position.y;
         [obstacleToRemove removeFromParent];
         [_obstacles removeObject:obstacleToRemove];
+        CCLOG(@"Obstacle removed");
+    }
+    
+    // Restore any obstacle in onScreenObstacles
+    for (ObstacleInfo *obsInfo in onScreenObstacles) {
+        [self restoreObstacle:obsInfo];
     }
     
     // Power the ball
@@ -214,7 +250,7 @@ bool isBurning;
         [self.steamBot.physicsBody applyImpulse:CGPointMake(sideWaysPulse, 0.0)];
         
         if (mY.y < screenHeight/2) {
-            [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 100.0f)];
+            [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 500.0f)];
         }else {
 
             currentPhysicsPos.y -= 10.0;
@@ -255,7 +291,6 @@ bool isBurning;
 
  -(void)bounce
 {
-    // float sprite_mass = self.steamBot.physicsBody.mass;
     CGPoint gravity = self.physicsNode.gravity;
     float groundDist = mY.y - col1.base;
     
@@ -276,34 +311,75 @@ bool isBurning;
     
     // Negate gravity
     [self.steamBot.physicsBody applyImpulse:gravPulse];
-    
-
 }
 
 - (void)spawnNewObstacle {
     
-    CCNode *walls = [CCBReader load:@"Borders"];
-    walls.position = ccp(160.0, topMost);
-    Obstacle *lastObstacle;
-    lastObstacle = [self.obstacles lastObject];
+    // Define different kinds of obstacles
+    Obstacle *obstacle;
+    ObstacleInfo *info = [[ObstacleInfo alloc]init];
     
-    [self.obstacles addObject:walls];
-    [self.physicsNode addChild:walls];
-    
-    CGFloat wPos = walls.position.y;
-    CGFloat wHeight = walls.boundingBox.size.height;
-    topMost = wPos + wHeight;
-    
-    Obstacle *obstacle = (Obstacle *)[CCBReader load:@"Poles"];
+    obstacle = (Obstacle *) [CCBReader load:@"Poles"];
     [obstacle setupRandomPosition];
+    obstacle.position = ccp(160.0, topMost);
+    [self.obstacles addObject:obstacle]; // add obstacle to obstacle list
+    [self.physicsNode addChild:obstacle]; // add obstacle to screen
+    topMost = obstacle.boundingBox.size.height + obstacle.position.y; // new top from current obstacle
     
-    lastObstacle = [self.obstacles lastObject];
-    obstacle.position = ccp(160.0f, topMost);
+    info.obstacleInLayer = YES;
+    info.settings = obstacle.settings;
+    info.objectHeight = obstacle.boundingBox.size.height;
+    info.objectPosition = obstacle.position;
     
-    [self.obstacles addObject:obstacle];
-    [self.physicsNode addChild:obstacle];
+    // [self.obstacleList addObject:info];
+    [self.obstacleList addObject:info];
     
-    topMost = obstacle.boundingBox.size.height + obstacle.position.y;
+    CCLOG(@"Obstacle count %d",self.obstacleList.count);
+    
+}
+
+- (void)restoreObstacle:(ObstacleInfo *)info { // Restore previously deleted obstacle
+    
+    Obstacle *obstacle;
+    
+    obstacle = (Obstacle *)[CCBReader load:@"Poles"];
+    [obstacle restorePosition:info.settings]; // Reset position of pole positions
+    obstacle.position = info.objectPosition;
+    [self.obstacles addObject:obstacle]; // add obstacle to list of obstacles
+    [self.physicsNode addChild:obstacle]; // add obstacle to screen
+    CCLOG(@"Obstacle restored");
+    
+    info.obstacleInLayer = YES; // indicate that object is on screen
+    
+    // If object is top of screen, change topMost
+    CGFloat obstacleTop = obstacle.boundingBox.size.height + obstacle.position.y;
+    if (obstacleTop > topMost) {
+        topMost = obstacleTop;
+    }
+    
+    // NSString *restoredObstacle = [self.obstacleLibrary objectAtIndex:info.obstacleType];
+    
+}
+
+-(BOOL)obstacleOffScreen:(ObstacleInfo *)info {
+    
+    BOOL isOffScreen = NO;
+    
+    // Find obstacles off the bottom and top of the screen
+    CGFloat bottomOfObstacle = info.objectPosition.y;
+    
+    CGFloat topOfObstacle = info.objectPosition.y  + info.objectHeight;
+    
+    // top of obstacle is below the bottom of the screen
+    if (topOfObstacle < abs(self.physicsNode.position.y)) {
+        isOffScreen = YES;
+    }
+    
+    // bottom of obstacle is above the top of the screen
+    if (bottomOfObstacle > abs(self.physicsNode.position.y) + self.scene.boundingBox.size.height) {
+        isOffScreen = YES;
+    }
+    return isOffScreen;
     
 }
 

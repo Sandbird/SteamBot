@@ -343,8 +343,10 @@ bool isBurning;
     Obstacle *obstacle;
     
     obstacle = (Obstacle *)[CCBReader load:@"Poles"];
+    
     [obstacle restorePosition:info.settings]; // Reset position of pole positions
     obstacle.position = info.objectPosition;
+    
     [self.obstacles addObject:obstacle]; // add obstacle to list of obstacles
     [self.physicsNode addChild:obstacle]; // add obstacle to screen
     CCLOG(@"Obstacle restored");

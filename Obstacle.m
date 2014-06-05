@@ -24,8 +24,10 @@ static const CGFloat poleDistance = 80.0f;
 }
 
 -(void)restorePosition:(NSMutableArray *)restoreSettings{
-    _leftPole = [restoreSettings objectAtIndex:0];
-    _rightPole = [restoreSettings objectAtIndex:1];
+    NSValue *leftPos = [restoreSettings objectAtIndex:0];
+    NSValue *rightPos = [restoreSettings objectAtIndex:1];
+    _leftPole.position = leftPos.CGPointValue;
+    _rightPole.position = rightPos.CGPointValue;
 }
 
 - (void)setupRandomPosition {
@@ -37,8 +39,8 @@ static const CGFloat poleDistance = 80.0f;
     _rightPole.position = ccp(_leftPole.position.x + poleDistance, _rightPole.position.y);
     
     // Remember these settings for later
-    [self.settings addObject:_leftPole];
-    [self.settings addObject:_rightPole];
+    [self.settings addObject:[NSValue valueWithCGPoint:_leftPole.position]];
+    [self.settings addObject:[NSValue valueWithCGPoint:_rightPole.position]];
     
 }
 

@@ -13,8 +13,8 @@
 -(void)setupRandomPosition;
 -(void)restorePosition:(NSMutableArray *)restoreSettings;
 
-@property (nonatomic,strong)CCNode *leftPole;
-@property (nonatomic, strong)CCNode *rightPole;
+@property (nonatomic,strong)CCSprite *leftPole;
+@property (nonatomic, strong)CCSprite *rightPole;
 @property (nonatomic, strong)NSMutableArray *settings;
 
 @end

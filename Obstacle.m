@@ -44,6 +44,9 @@ static const CGFloat poleDistance = 80.0f;
     
 }
 
+-(BOOL)hasCollided:(CGPoint)ballPos {
+    return false;
+}
 
 @end
 

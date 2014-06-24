@@ -9,6 +9,7 @@
 	</dict>
 	<key>spriteFrameFiles</key>
 	<array>
+		<string>WaterDrop.plist</string>
 		<string>SteamBotDoor.plist</string>
 	</array>
 </dict>

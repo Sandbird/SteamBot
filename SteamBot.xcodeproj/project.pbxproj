@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3611162418F3233F00C8EB44 /* burnerFire.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3611162318F3233F00C8EB44 /* burnerFire.plist */; };
 		3627B89A1913EE260009CF49 /* Obstacle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3627B8991913EE260009CF49 /* Obstacle.m */; };
+		368BE0891959CF7F0023A2E7 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 368BE0881959CF7F0023A2E7 /* GLKit.framework */; };
 		368CAAA7191475A100E2EA99 /* ObstacleInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 368CAAA6191475A000E2EA99 /* ObstacleInfo.m */; };
 		36F451C31919BBD600A7CB29 /* Tunnels.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F451C21919BBD600A7CB29 /* Tunnels.m */; };
 		36F88C8B18F628DB001F0A8F /* steamEffect.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36F88C8A18F628DB001F0A8F /* steamEffect.plist */; };
@@ -65,6 +66,7 @@
 		3611162318F3233F00C8EB44 /* burnerFire.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = burnerFire.plist; sourceTree = "<group>"; };
 		3627B8981913EE260009CF49 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
 		3627B8991913EE260009CF49 /* Obstacle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Obstacle.m; sourceTree = "<group>"; };
+		368BE0881959CF7F0023A2E7 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		368CAAA5191475A000E2EA99 /* ObstacleInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObstacleInfo.h; sourceTree = "<group>"; };
 		368CAAA6191475A000E2EA99 /* ObstacleInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObstacleInfo.m; sourceTree = "<group>"; };
 		36F451C11919BBD600A7CB29 /* Tunnels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tunnels.h; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				368BE0891959CF7F0023A2E7 /* GLKit.framework in Frameworks */,
 				B737898A1807642B0076A88C /* libcocos2d.a in Frameworks */,
 				B77F1B3217B978D7009739AE /* QuartzCore.framework in Frameworks */,
 				B77F1B3417B978D7009739AE /* OpenGLES.framework in Frameworks */,
@@ -211,6 +214,7 @@
 		B77F1B3017B978D7009739AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				368BE0881959CF7F0023A2E7 /* GLKit.framework */,
 				B7B3713D180358F1007369CC /* libObjectiveChipmunk.a */,
 				B77F1B3117B978D7009739AE /* QuartzCore.framework */,
 				B77F1B3317B978D7009739AE /* OpenGLES.framework */,

@@ -250,7 +250,7 @@ bool isBurning;
         [self.steamBot.physicsBody applyImpulse:CGPointMake(sideWaysPulse, 0.0)];
         
         if (mY.y < screenHeight/2) {
-            [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 500.0f)];
+            [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 300.0f)];
         }else {
 
             currentPhysicsPos.y -= 10.0;
@@ -334,7 +334,7 @@ bool isBurning;
     // [self.obstacleList addObject:info];
     [self.obstacleList addObject:info];
     
-    CCLOG(@"Obstacle count %d",self.obstacleList.count);
+    CCLOG(@"Obstacle count %lu",self.obstacleList.count);
     
 }
 

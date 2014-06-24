@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>SequencerJoints</key>
+	<dict>
+		<key>hidden</key>
+		<false/>
+		<key>locked</key>
+		<false/>
+	</dict>
+	<key>UUID</key>
+	<integer>6</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -14,17 +23,27 @@
 	<string>CocosBuilder</string>
 	<key>fileVersion</key>
 	<integer>4</integer>
+	<key>gridspaceHeight</key>
+	<integer>64</integer>
+	<key>gridspaceWidth</key>
+	<integer>64</integer>
 	<key>guides</key>
+	<array/>
+	<key>joints</key>
 	<array/>
 	<key>jsControlled</key>
 	<false/>
 	<key>nodeGraph</key>
 	<dict>
+		<key>UUID</key>
+		<integer>1</integer>
 		<key>baseClass</key>
 		<string>CCNode</string>
 		<key>children</key>
 		<array>
 			<dict>
+				<key>UUID</key>
+				<integer>2</integer>
 				<key>baseClass</key>
 				<string>CCSprite</string>
 				<key>children</key>
@@ -45,6 +64,12 @@
 					<true/>
 					<key>bodyShape</key>
 					<integer>0</integer>
+					<key>collisionCategories</key>
+					<array/>
+					<key>collisionMask</key>
+					<array/>
+					<key>collisionType</key>
+					<string></string>
 					<key>cornerRadius</key>
 					<real>0.0</real>
 					<key>density</key>
@@ -80,6 +105,35 @@
 						<array>
 							<real>1.28125</real>
 							<real>100.1015625</real>
+						</array>
+					</array>
+					<key>polygons</key>
+					<array>
+						<array>
+							<array>
+								<real>0.0</real>
+								<real>0.0</real>
+							</array>
+							<array>
+								<real>199.02734375</real>
+								<real>11.76953125</real>
+							</array>
+							<array>
+								<real>234.1328125</real>
+								<real>103.44140625</real>
+							</array>
+							<array>
+								<real>226.7109375</real>
+								<real>118.55859375</real>
+							</array>
+							<array>
+								<real>13.94140625</real>
+								<real>102.6953125</real>
+							</array>
+							<array>
+								<real>1.28125</real>
+								<real>100.1015625</real>
+							</array>
 						</array>
 					</array>
 				</dict>
@@ -158,6 +212,8 @@
 				</array>
 			</dict>
 			<dict>
+				<key>UUID</key>
+				<integer>3</integer>
 				<key>baseClass</key>
 				<string>CCSprite</string>
 				<key>children</key>
@@ -178,6 +234,12 @@
 					<true/>
 					<key>bodyShape</key>
 					<integer>0</integer>
+					<key>collisionCategories</key>
+					<array/>
+					<key>collisionMask</key>
+					<array/>
+					<key>collisionType</key>
+					<string></string>
 					<key>cornerRadius</key>
 					<real>0.0</real>
 					<key>density</key>
@@ -205,6 +267,27 @@
 						<array>
 							<real>1.5546786785125732</real>
 							<real>101.55857849121094</real>
+						</array>
+					</array>
+					<key>polygons</key>
+					<array>
+						<array>
+							<array>
+								<real>0.65234321355819702</real>
+								<real>6.2968597412109375</real>
+							</array>
+							<array>
+								<real>209.0625</real>
+								<real>16.972660064697266</real>
+							</array>
+							<array>
+								<real>242.36717224121094</real>
+								<real>123.88672637939453</real>
+							</array>
+							<array>
+								<real>1.5546786785125732</real>
+								<real>101.55857849121094</real>
+							</array>
 						</array>
 					</array>
 				</dict>
@@ -291,6 +374,8 @@
 				</array>
 			</dict>
 			<dict>
+				<key>UUID</key>
+				<integer>4</integer>
 				<key>baseClass</key>
 				<string>CCNodeColor</string>
 				<key>children</key>
@@ -302,7 +387,7 @@
 				<key>memberVarAssignmentName</key>
 				<string></string>
 				<key>memberVarAssignmentType</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>physicsBody</key>
 				<dict>
 					<key>affectedByGravity</key>
@@ -311,6 +396,12 @@
 					<true/>
 					<key>bodyShape</key>
 					<integer>0</integer>
+					<key>collisionCategories</key>
+					<array/>
+					<key>collisionMask</key>
+					<array/>
+					<key>collisionType</key>
+					<string></string>
 					<key>cornerRadius</key>
 					<real>0.0</real>
 					<key>density</key>
@@ -338,6 +429,27 @@
 						<array>
 							<real>10</real>
 							<real>0.0</real>
+						</array>
+					</array>
+					<key>polygons</key>
+					<array>
+						<array>
+							<array>
+								<real>10</real>
+								<real>0.0</real>
+							</array>
+							<array>
+								<real>10</real>
+								<real>80</real>
+							</array>
+							<array>
+								<real>0.0</real>
+								<real>80</real>
+							</array>
+							<array>
+								<real>0.0</real>
+								<real>0.0</real>
+							</array>
 						</array>
 					</array>
 				</dict>
@@ -435,10 +547,10 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 			<dict>
+				<key>UUID</key>
+				<integer>5</integer>
 				<key>baseClass</key>
 				<string>CCNodeColor</string>
 				<key>children</key>
@@ -450,7 +562,7 @@
 				<key>memberVarAssignmentName</key>
 				<string></string>
 				<key>memberVarAssignmentType</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>physicsBody</key>
 				<dict>
 					<key>affectedByGravity</key>
@@ -459,6 +571,12 @@
 					<true/>
 					<key>bodyShape</key>
 					<integer>0</integer>
+					<key>collisionCategories</key>
+					<array/>
+					<key>collisionMask</key>
+					<array/>
+					<key>collisionType</key>
+					<string></string>
 					<key>cornerRadius</key>
 					<real>0.0</real>
 					<key>density</key>
@@ -486,6 +604,27 @@
 						<array>
 							<real>10</real>
 							<real>0.0</real>
+						</array>
+					</array>
+					<key>polygons</key>
+					<array>
+						<array>
+							<array>
+								<real>10</real>
+								<real>0.0</real>
+							</array>
+							<array>
+								<real>10</real>
+								<real>80</real>
+							</array>
+							<array>
+								<real>0.0</real>
+								<real>80</real>
+							</array>
+							<array>
+								<real>0.0</real>
+								<real>0.0</real>
+							</array>
 						</array>
 					</array>
 				</dict>
@@ -592,7 +731,7 @@
 		<key>memberVarAssignmentName</key>
 		<string></string>
 		<key>memberVarAssignmentType</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>properties</key>
 		<array>
 			<dict>
@@ -730,5 +869,7 @@
 	</array>
 	<key>stageBorder</key>
 	<integer>3</integer>
+	<key>stageColor</key>
+	<integer>2</integer>
 </dict>
 </plist>

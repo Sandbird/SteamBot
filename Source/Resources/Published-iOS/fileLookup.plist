@@ -3,10 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>filenames</key>
-	<dict>
-		<key>SteamBotDoor/rightPole.psd</key>
-		<string>SteamBotDoor/rightPole.png</string>
-	</dict>
+	<dict/>
 	<key>metadata</key>
 	<dict>
 		<key>version</key>

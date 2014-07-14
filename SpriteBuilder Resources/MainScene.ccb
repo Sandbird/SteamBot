@@ -227,7 +227,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>SteamBotDoor/SteamBot.png</string>
+							<string>SteamBot/SteamBot.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -687,8 +687,8 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
+									<real>9.2233720368547758e+18</real>
 									<real>0.0</real>
-									<real>285</real>
 									<integer>1</integer>
 									<integer>2</integer>
 									<integer>1</integer>
@@ -853,8 +853,8 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>-1</real>
-									<real>-285</real>
+									<real>0.0</real>
+									<real>0.0</real>
 									<integer>1</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -1108,7 +1108,7 @@
 								<key>value</key>
 								<array>
 									<real>0.0</real>
-									<real>-285</real>
+									<real>0.0</real>
 									<integer>1</integer>
 									<integer>1</integer>
 									<integer>1</integer>
@@ -1146,7 +1146,7 @@
 								<key>type</key>
 								<string>Degrees</string>
 								<key>value</key>
-								<real>90</real>
+								<real>0.0</real>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -1372,7 +1372,7 @@
 								<key>value</key>
 								<array>
 									<real>0.0</real>
-									<real>285</real>
+									<real>0.0</real>
 									<integer>1</integer>
 									<integer>1</integer>
 									<integer>1</integer>
@@ -1410,7 +1410,7 @@
 								<key>type</key>
 								<string>Degrees</string>
 								<key>value</key>
-								<real>90</real>
+								<real>0.0</real>
 							</dict>
 							<dict>
 								<key>name</key>
@@ -1650,9 +1650,9 @@
 			<key>name</key>
 			<string>Open Door</string>
 			<key>offset</key>
-			<real>1.734375</real>
+			<real>0.0</real>
 			<key>position</key>
-			<real>4</real>
+			<real>0.0</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

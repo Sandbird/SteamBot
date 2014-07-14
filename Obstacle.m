@@ -10,38 +10,96 @@
 
 
 #define ARC4RANDOM_MAX      0x100000000
-// visibility on a 3,5-inch iPhone ends a 88 points and we want some meat
+
 static const CGFloat minimumXPositionLeftPole = 275.0f;
-// visibility ends at 480 and we want some meat
 static const CGFloat maximumXPositionLeftPole = 475.0f;
-// distance between top and bottom pipe
-static const CGFloat poleDistance = 80.0f;
+
+// static const CGFloat poleDistance = 80.0f;
+
+@interface Obstacle()
+
+@property (nonatomic, strong) NSMutableArray *obstacleLibrary;
+@property NSInteger obstacleSelected;
+@property (nonatomic, strong)CCNode *currentObstacle;
+
+@end
 
 @implementation Obstacle
 
 - (void)didLoadFromCCB {
     self.settings = [[NSMutableArray alloc]init];
+    
+    self.obstacleLibrary = [[NSMutableArray alloc]init];
+    
+    // list of objects available for display
+    [self.obstacleLibrary addObject:@"leftLedge"];
+    [self.obstacleLibrary addObject:@"rightLedge"];
+    [self.obstacleLibrary addObject:@"WaterDroplet"];
+    [self.obstacleLibrary addObject:@"burnerRight"];
+    [self.obstacleLibrary addObject:@"portableBurnerLeft"];
+    
 }
 
 -(void)restorePosition:(NSMutableArray *)restoreSettings{
-    NSValue *leftPos = [restoreSettings objectAtIndex:0];
-    NSValue *rightPos = [restoreSettings objectAtIndex:1];
-    _leftPole.position = leftPos.CGPointValue;
-    _rightPole.position = rightPos.CGPointValue;
+    
+    // Find previous obstacle and restore
+    NSNumber *objectType = [restoreSettings objectAtIndex:0];
+    NSInteger index = objectType.integerValue;
+    [self addObstacle:index];
+    
+    NSValue *position = [restoreSettings objectAtIndex:1];
+    self.currentObstacle.position = position.CGPointValue;
 }
 
 - (void)setupRandomPosition {
     
-    // value between 0.f and 1.f
+    // Select internal obstacle at random from obstacle library
+    self.obstacleSelected = arc4random()%5;
+    [self addObstacle:self.obstacleSelected];
+    
+    // Get random x position (y position static)
     CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
     CGFloat range = maximumXPositionLeftPole - minimumXPositionLeftPole;
-    _leftPole.position = ccp(minimumXPositionLeftPole + (random * range), _leftPole.position.y);
-    _rightPole.position = ccp(_leftPole.position.x + poleDistance, _rightPole.position.y);
+    CGFloat height = self.boundingBox.size.height/2;
     
-    // Remember these settings for later
-    [self.settings addObject:[NSValue valueWithCGPoint:_leftPole.position]];
-    [self.settings addObject:[NSValue valueWithCGPoint:_rightPole.position]];
+    switch (self.obstacleSelected) {
+        case 0:
+            //leftLedge
+            self.currentObstacle.position = ccp(38.0f, height);
+            break;
+        case 1:
+            // rightLedge
+            self.currentObstacle.position = ccp(282.0f, height);
+            break;
+        case 2:
+            // Water drop
+            self.currentObstacle.position = ccp(random*range, height);
+            CCLOG(@"bubble pos: %f",random*range);
+            break;
+        case 3:
+            // Right portable burner
+            self.currentObstacle.position = ccp(320.0f, height);
+            break;
+        case 4:
+            // Left portable burner
+            self.currentObstacle.position = ccp(0.0f, height);
+            break;
+            
+        default:
+            break;
+    }
+    [self.settings addObject:[NSValue valueWithCGPoint:self.currentObstacle.position]];
     
+}
+
+-(void)addObstacle:(NSUInteger)index{
+    
+    // NSLog(@"Object Selected = %d",self.obstacleSelected);
+    NSString *obstacle = [self.obstacleLibrary objectAtIndex:index];
+    self.currentObstacle = [CCBReader load:obstacle];
+    [self addChild:self.currentObstacle];
+    // Save obstacle selected
+    [self.settings addObject:[NSNumber numberWithInteger:self.obstacleSelected]];
 }
 
 -(BOOL)hasCollided:(CGPoint)ballPos {

@@ -30,7 +30,7 @@ typedef struct {
 
 @interface GameScene()
 
-@property (nonatomic, strong) CCNode *steamBot;
+@property (nonatomic, strong) SteamBot *steamBot;
 @property (nonatomic, strong) CCPhysicsNode *physicsNode;
 
 @property (nonatomic, strong) CCParticleSystem *particles;
@@ -43,7 +43,7 @@ typedef struct {
 @property (nonatomic, strong) CCNode *poles;
 @property (nonatomic, strong) CCNode *walls;
 @property (nonatomic, strong) NSMutableArray *obstacles;
-@property (nonatomic, strong) NSMutableArray *obstacleLibrary;
+// @property (nonatomic, strong) NSMutableArray *obstacleLibrary;
 @property (nonatomic, strong) NSMutableArray *obstacleList;
 @property (nonatomic, strong) CCNode *waterLevel;
 @property (nonatomic, strong) CCNode *steamLevel;
@@ -62,6 +62,9 @@ CGFloat bottomMost;
 float screenHeight;
 float relativeBase;
 bool isBurning;
+float delay;
+float timeToNextBlink;
+CCAnimationManager  *steamBotAnimation;
 
 
 - (void)didLoadFromCCB {
@@ -70,13 +73,11 @@ bool isBurning;
     self.userInteractionEnabled = TRUE;
     
     self.obstacles = [[NSMutableArray alloc]init];
-    self.obstacleLibrary = [[NSMutableArray alloc]init];
-    self.obstacleList = [NSMutableArray array];
-
     _pulseOn = FALSE;
     relativeBase = 0;
     isBurning = FALSE;
     bottomMost = 0;
+    delay = 0;
     
     // Fire for device
     // particles = [CCParticleSystemQuad particleWithFile:@"fire.plist"];
@@ -88,16 +89,7 @@ bool isBurning;
     self.steam = [CCParticleSystem particleWithFile:@"steamEffect.plist"];
     [self addChild:self.steam z:1];
     self.steam.visible = FALSE;
-    
-    // Load corridor and poles names
-    [self.obstacleLibrary addObject:@"Corridor"];
-    [self.obstacleLibrary addObject:@"Poles"];
-    [self.obstacleLibrary addObject:@"Tunnels"];
-    
-    // Corridor used only once and is the first obstacle;
-    NSString *corrString = [self.obstacleLibrary objectAtIndex:0];
-    self.corridor = [CCBReader load:corrString];
-    
+    self.corridor = [CCBReader load:@"Corridor"];
     
     [self.physicsNode addChild:self.corridor];
     self.corridor.position = ccp(160.0, 50.0);
@@ -113,6 +105,10 @@ bool isBurning;
     col1.lookahead = .25f; // 2.5f is the default value!! .25 very bouncy.
     
     currentCorridorPos = [self.corridor convertToWorldSpace:ccp(0, 0)];
+    
+    // Initial delay for blinking of SteamBot (1 to 2 seconds)
+    delay = (arc4random() % 3000) / 1000.f;
+    steamBotAnimation = self.steamBot.animationManager;
     
 }
 
@@ -141,8 +137,13 @@ bool isBurning;
 
 -(void)update:(CCTime)delta
 {
-    
-    delta = fminf(delta, 0.08f);
+    timeToNextBlink += delta;
+    if (timeToNextBlink > delay) {
+        [steamBotAnimation runAnimationsForSequenceNamed:@"Blink"];
+        delay = ((arc4random() % 3000) / 1000.f) + 1;
+        timeToNextBlink = 0;
+    }
+    // delta = fminf(delta, 0.08f);
     
     screenHeight = self.scene.boundingBox.size.height;
     
@@ -156,8 +157,7 @@ bool isBurning;
     // Ball on burners -- increase pressure, reduce water
     if (isBurning) {
         
-        // Move level using time to account for different devices
-        self.steamLevel.scaleY = self.steamLevel.scaleY + (.05 * delta);
+        self.steamLevel.scaleY = self.steamLevel.scaleY + 1.0f;
         
         if (self.steamLevel.scaleY > 1.0) {
             self.steamLevel.scaleY = 1.0;
@@ -176,8 +176,6 @@ bool isBurning;
     while (topMost + self.physicsNode.position.y < screenHeight) {
         [self spawnNewObstacle];
     }
-    
-    // TODO: Change method of tracking obstacles on and off screen
     
     // If obstacles are off the screen, delete them
     NSMutableArray *offScreenObstacles = nil;
@@ -250,7 +248,7 @@ bool isBurning;
         [self.steamBot.physicsBody applyImpulse:CGPointMake(sideWaysPulse, 0.0)];
         
         if (mY.y < screenHeight/2) {
-            [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 300.0f)];
+            [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 200.0)];
         }else {
 
             currentPhysicsPos.y -= 10.0;
@@ -259,10 +257,12 @@ bool isBurning;
         }
         
     }else {
+        // TODO: Screen is not keeping up with ball
         // _pulseOn is FALSE, ball is falling
         if (mY.y < screenHeight/2 && currentPhysicsPos.y < relativeBase) {
             currentPhysicsPos.y += 10.0f;
             currentCorridorPos.y += 10.0f;
+            
             if (currentPhysicsPos.y > 0) {
                 currentPhysicsPos.y = 0;
             }
@@ -279,7 +279,7 @@ bool isBurning;
     }*/
     
     // Bounce if near the ground
-    if (distanceAboveGround < col1.targetheight) {
+    if (distanceAboveGround < col1.targetheight && _physicsNode.position.y == 0) {
 
         [self bounce];
         isBurning = TRUE;
@@ -315,11 +315,11 @@ bool isBurning;
 
 - (void)spawnNewObstacle {
     
-    // Define different kinds of obstacles
+    // Define base obstacle
     Obstacle *obstacle;
     ObstacleInfo *info = [[ObstacleInfo alloc]init];
     
-    obstacle = (Obstacle *) [CCBReader load:@"Poles"];
+    obstacle = (Obstacle *) [CCBReader load:@"baseObstacle"];
     [obstacle setupRandomPosition];
     obstacle.position = ccp(160.0, topMost);
     [self.obstacles addObject:obstacle]; // add obstacle to obstacle list
@@ -334,7 +334,8 @@ bool isBurning;
     // [self.obstacleList addObject:info];
     [self.obstacleList addObject:info];
     
-    CCLOG(@"Obstacle count %lu",self.obstacleList.count);
+    unsigned long counts = (unsigned long)self.obstacleList.count;
+    CCLOG(@"Obstacle count %lu",counts);
     
 }
 
@@ -342,7 +343,7 @@ bool isBurning;
     
     Obstacle *obstacle;
     
-    obstacle = (Obstacle *)[CCBReader load:@"Poles"];
+    obstacle = (Obstacle *)[CCBReader load:@"baseObstacle"];
     
     [obstacle restorePosition:info.settings]; // Reset position of pole positions
     obstacle.position = info.objectPosition;

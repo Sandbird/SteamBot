@@ -13,6 +13,7 @@
 -(void)setupRandomPosition;
 -(void)restorePosition:(NSMutableArray *)restoreSettings;
 -(BOOL)hasCollided:(CGPoint)ballPos;
+-(void)addObstacle:(NSUInteger)index;
 
 @property (nonatomic,strong)CCSprite *leftPole;
 @property (nonatomic, strong)CCSprite *rightPole;

@@ -82,6 +82,11 @@
 		</dict>
 		<key>Sprites</key>
 		<dict/>
+		<key>SteamBot</key>
+		<dict>
+			<key>isSmartSpriteSheet</key>
+			<true/>
+		</dict>
 		<key>SteamBotDoor</key>
 		<dict>
 			<key>isSmartSpriteSheet</key>

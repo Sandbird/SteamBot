@@ -10,4 +10,6 @@
 
 @interface SteamBot : CCNode
 
+-(void)blink;
+
 @end

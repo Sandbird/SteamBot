@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "GameScene.m"
-            timestampString = "423590904.158796"
+            filePath = "SteamBot.m"
+            timestampString = "426823289.189008"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345"
-            landmarkName = "-restoreObstacle:"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "-blink"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

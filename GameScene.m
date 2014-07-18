@@ -43,10 +43,17 @@ typedef struct {
 @property (nonatomic, strong) CCNode *poles;
 @property (nonatomic, strong) CCNode *walls;
 @property (nonatomic, strong) NSMutableArray *obstacles;
-// @property (nonatomic, strong) NSMutableArray *obstacleLibrary;
 @property (nonatomic, strong) NSMutableArray *obstacleList;
 @property (nonatomic, strong) CCNode *waterLevel;
 @property (nonatomic, strong) CCNode *steamLevel;
+@property (nonatomic, strong) NSMutableArray *backgroundNodes;
+@property (nonatomic) NSInteger backgroundIndex;
+@property (nonatomic, strong) CCNode *currentBackground;
+@property (nonatomic, strong) CCNode *secondaryBackground;
+@property (nonatomic, strong) CCNode *waterGaugeLeft;
+@property (nonatomic, strong) CCNode *waterGaugeRight;
+@property (nonatomic) NSInteger backgroundBase;
+
 
 @end
 
@@ -57,6 +64,7 @@ CGPoint mY;
 float touch_X;
 CGPoint currentPhysicsPos;
 CGPoint currentCorridorPos;
+CGPoint currentBackgroundPos;
 CGFloat topMost;
 CGFloat bottomMost;
 float screenHeight;
@@ -65,6 +73,10 @@ bool isBurning;
 float delay;
 float timeToNextBlink;
 CCAnimationManager  *steamBotAnimation;
+bool corridorIsClosed;
+
+
+
 
 
 - (void)didLoadFromCCB {
@@ -73,11 +85,30 @@ CCAnimationManager  *steamBotAnimation;
     self.userInteractionEnabled = TRUE;
     
     self.obstacles = [[NSMutableArray alloc]init];
+    self.obstacleList = [[NSMutableArray alloc]init];
+    self.backgroundNodes = [[NSMutableArray alloc]init];
+    
+    CCNode *background1 = [CCBReader load:@"Background"];
+    CCNode *background2 = [CCBReader load:@"Background"];
+    
+    [self.backgroundNodes addObject:background1];
+    [self.backgroundNodes addObject:background2];
+    self.backgroundIndex = 0;
+    
+    self.currentBackground = [self.backgroundNodes objectAtIndex:0];
+    self.secondaryBackground = [self.backgroundNodes objectAtIndex:1];
+    [self addChild:self.currentBackground z:0];
+    [self addChild:self.secondaryBackground z:0];
+    self.currentBackground.position = ccp(0, 0);
+    self.secondaryBackground.position = ccp(0, self.currentBackground.boundingBox.size.height);
+    
     _pulseOn = FALSE;
     relativeBase = 0;
     isBurning = FALSE;
     bottomMost = 0;
     delay = 0;
+    corridorIsClosed = YES;
+    _backgroundBase = 0;
     
     // Fire for device
     // particles = [CCParticleSystemQuad particleWithFile:@"fire.plist"];
@@ -110,6 +141,12 @@ CCAnimationManager  *steamBotAnimation;
     delay = (arc4random() % 3000) / 1000.f;
     steamBotAnimation = self.steamBot.animationManager;
     
+    [self.physicsNode setZOrder:1];
+    [self.waterLevel setZOrder:2];
+    [self.steamLevel setZOrder:2];
+    [self.waterGaugeLeft setZOrder:3];
+    [self.waterGaugeRight setZOrder:3];
+    
 }
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -137,6 +174,7 @@ CCAnimationManager  *steamBotAnimation;
 
 -(void)update:(CCTime)delta
 {
+    // Make SteamBot blink
     timeToNextBlink += delta;
     if (timeToNextBlink > delay) {
         [steamBotAnimation runAnimationsForSequenceNamed:@"Blink"];
@@ -152,6 +190,20 @@ CCAnimationManager  *steamBotAnimation;
     self.steam.position = CGPointMake(mY.x,mY.y - 30);
     
     float distanceAboveGround = mY.y - col1.base;
+        
+    // Check to see if corridor should close
+    // First need to trigger the effect
+    if (mY.y < 120) {
+        corridorIsClosed = NO;
+    }
+    
+    CGFloat closePoint = 250;
+    if (!corridorIsClosed && mY.y > closePoint) {
+        CCAnimationManager *corrAnimation = self.corridor.animationManager;
+        [corrAnimation runAnimationsForSequenceNamed:@"CloseGap"];
+        corridorIsClosed = YES;
+        
+    }
     
     
     // Ball on burners -- increase pressure, reduce water
@@ -181,14 +233,14 @@ CCAnimationManager  *steamBotAnimation;
     NSMutableArray *offScreenObstacles = nil;
     NSMutableArray *onScreenObstacles = nil;
     
-    // Obstacles to delete or to replace
+    // Scan obstacles for offscreen, replacement
     for (ObstacleInfo *obstInfo in self.obstacleList) {
         
         Obstacle *obstacle;
         
         BOOL obstacleIsOffScreen = [self obstacleOffScreen:obstInfo];
         
-        // Should obstacle be restored?
+        // Should obstacle be restored? (obstacle no onscreen, but should be)
         if (!obstInfo.obstacleInLayer && !obstacleIsOffScreen) {
             // Replace obstacle to position
             // [self restoreObstacle:obstInfo];
@@ -197,7 +249,8 @@ CCAnimationManager  *steamBotAnimation;
             }
             [onScreenObstacles addObject:obstInfo];
             
-        } else if (obstInfo.obstacleInLayer && obstacleIsOffScreen) {
+        } // Obstacle is offscreen, remove it
+        else if (obstInfo.obstacleInLayer && obstacleIsOffScreen) {
             // obstacle is on layer and is offscreen (both required)
             obstInfo.obstacleInLayer = NO; // Mark obstacle as off layer
             for (Obstacle *obstacleToCheck in self.obstacles) {
@@ -213,6 +266,18 @@ CCAnimationManager  *steamBotAnimation;
             
         }
         
+        // Check for obstacle collision with various objects inside obstacle
+        for (Obstacle *anObstacle in self.obstacles) {
+            if (anObstacle.position.y == obstInfo.objectPosition.y) {
+                if ([anObstacle hasCollided:mY]) {
+                    [anObstacle actOnCollision];
+                    obstInfo.settings = anObstacle.settings; // reset settings
+                    // CCLOG(@"Collision!!");
+                }
+            }
+            
+        }
+        
     }
     
     // Remove any object in offScreenObstacles from screen and _obstacle array
@@ -220,7 +285,6 @@ CCAnimationManager  *steamBotAnimation;
         // relativeBase = -obstacleToRemove.position.y;
         [obstacleToRemove removeFromParent];
         [_obstacles removeObject:obstacleToRemove];
-        CCLOG(@"Obstacle removed");
     }
     
     // Restore any obstacle in onScreenObstacles
@@ -246,6 +310,7 @@ CCAnimationManager  *steamBotAnimation;
         }
         
         [self.steamBot.physicsBody applyImpulse:CGPointMake(sideWaysPulse, 0.0)];
+        // [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 200.0)];
         
         if (mY.y < screenHeight/2) {
             [self.steamBot.physicsBody applyImpulse:CGPointMake(0.0, 200.0)];
@@ -254,17 +319,23 @@ CCAnimationManager  *steamBotAnimation;
             currentPhysicsPos.y -= 10.0;
             currentPhysicsPos.x = 0;
             currentCorridorPos.y -=10.0;
+            currentBackgroundPos.y -= 10.0f;
         }
         
     }else {
-        // TODO: Screen is not keeping up with ball
         // _pulseOn is FALSE, ball is falling
         if (mY.y < screenHeight/2 && currentPhysicsPos.y < relativeBase) {
-            currentPhysicsPos.y += 10.0f;
+            /*currentPhysicsPos.y += 10.0f;
             currentCorridorPos.y += 10.0f;
+            currentBackgroundPos.y += 10.f;*/
+            
+            currentPhysicsPos.y = -(self.steamBot.position.y - (screenHeight/2));
+            currentBackgroundPos.y = -((self.steamBot.position.y - (screenHeight/2)) - (_backgroundBase * 1440));
+            currentCorridorPos.y = 160 -(self.steamBot.position.y - (screenHeight/2));
             
             if (currentPhysicsPos.y > 0) {
                 currentPhysicsPos.y = 0;
+                currentBackgroundPos.y = 0;
             }
             if (currentCorridorPos.y > 160.0) {
                 currentCorridorPos.y = 160.0;
@@ -287,6 +358,54 @@ CCAnimationManager  *steamBotAnimation;
     
     
     self.physicsNode.position = currentPhysicsPos;
+    
+    self.currentBackground.position = currentBackgroundPos;
+    self.secondaryBackground.position = ccp(0,currentBackgroundPos.y + self.currentBackground.boundingBox.size.height);
+    
+    // Swap background images when the ball is CLIMBING
+    if (self.secondaryBackground.position.y < 0) {
+        // Swap secondary and primary backgrounds
+        self.currentBackground.position = ccp(0, self.secondaryBackground.boundingBox.size.height + self.currentBackground.boundingBox.size.height + self.currentBackground.position.y);
+        self.backgroundIndex++;
+        if (self.backgroundIndex > 1) {
+            self.backgroundIndex = 0;
+        }
+        self.currentBackground = [self.backgroundNodes objectAtIndex:self.backgroundIndex];
+        NSInteger secIndex = self.backgroundIndex +1;
+        if (secIndex > 1) {
+            secIndex = 0;
+        }
+        self.secondaryBackground = [self.backgroundNodes objectAtIndex:secIndex];
+        currentBackgroundPos = self.currentBackground.position;
+        
+        _backgroundBase++;
+    }
+    
+    // Swap background Images when the ball is FALLING
+    CGPoint currBackgroundWord = [self.currentBackground convertToWorldSpace:ccp(0, 0)];
+    if (currBackgroundWord.y > -10.0f) {
+        if (_backgroundBase > 0) {
+            // swap secondary and primary backgrounds downward
+            self.secondaryBackground.position = ccp(0, self.secondaryBackground.position.y - (2 * self.currentBackground.boundingBox.size.height));
+            
+            self.backgroundIndex++;
+            if (self.backgroundIndex > 1) {
+                self.backgroundIndex = 0;
+            }
+            self.currentBackground = [self.backgroundNodes objectAtIndex:self.backgroundIndex];
+            NSInteger secIndex = self.backgroundIndex +1;
+            if (secIndex > 1) {
+                secIndex = 0;
+            }
+            self.secondaryBackground = [self.backgroundNodes objectAtIndex:secIndex];
+            currentBackgroundPos = self.currentBackground.position;
+            _backgroundBase--;
+            
+        }
+        
+    }
+    
+    // CCLOG(@"current background: %f, SteamBot %f",currentBackgroundPos.y, self.steamBot.position.y);
 }
 
  -(void)bounce
@@ -333,10 +452,7 @@ CCAnimationManager  *steamBotAnimation;
     
     // [self.obstacleList addObject:info];
     [self.obstacleList addObject:info];
-    
-    unsigned long counts = (unsigned long)self.obstacleList.count;
-    CCLOG(@"Obstacle count %lu",counts);
-    
+    CCLOG(@"Total obstacles on screen: %lu",(unsigned long)self.obstacles.count);
 }
 
 - (void)restoreObstacle:(ObstacleInfo *)info { // Restore previously deleted obstacle

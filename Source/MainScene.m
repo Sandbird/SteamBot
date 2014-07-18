@@ -10,11 +10,34 @@
 
 @implementation MainScene
 
+- (void)didLoadFromCCB {
+    
+    // Disable the resume button for now
+    self.resumeButton.enabled = NO;
+}
+
+// Load the primary game level
 -(void)gameStart
 {
-    
     CCScene *gameplayScene = [CCBReader loadAsScene:@"GameScene"];
     [[CCDirector sharedDirector] replaceScene:gameplayScene];
+}
+
+// Load the primary game level resuming where left off
+-(void)resumeStart
+{
+    
+}
+
+// Load options menu
+-(void)optionsStart
+{
+    
+}
+
+// Load instructions
+-(void)instructionsStart
+{
     
 }
 

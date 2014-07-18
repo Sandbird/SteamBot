@@ -14,6 +14,7 @@
 -(void)restorePosition:(NSMutableArray *)restoreSettings;
 -(BOOL)hasCollided:(CGPoint)ballPos;
 -(void)addObstacle:(NSUInteger)index;
+-(void)actOnCollision;
 
 @property (nonatomic,strong)CCSprite *leftPole;
 @property (nonatomic, strong)CCSprite *rightPole;

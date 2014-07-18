@@ -10,4 +10,6 @@
 
 @interface MainScene : CCNode
 
+@property (nonatomic, strong)CCButton *resumeButton;
+
 @end

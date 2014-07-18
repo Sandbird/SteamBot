@@ -21,6 +21,7 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
 @property (nonatomic, strong) NSMutableArray *obstacleLibrary;
 @property NSInteger obstacleSelected;
 @property (nonatomic, strong)CCNode *currentObstacle;
+@property (nonatomic)BOOL obstacleExists;
 
 @end
 
@@ -42,17 +43,27 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
 
 -(void)restorePosition:(NSMutableArray *)restoreSettings{
     
-    // Find previous obstacle and restore
-    NSNumber *objectType = [restoreSettings objectAtIndex:0];
-    NSInteger index = objectType.integerValue;
-    [self addObstacle:index];
+    // See if secondary object exists
+    NSNumber *doesItExist = [restoreSettings objectAtIndex:0];
+    self.obstacleExists = doesItExist.boolValue;
+    if (self.obstacleExists) {
+        // Find previous obstacle and restore
+        NSNumber *objectType = [restoreSettings objectAtIndex:1];
+        NSInteger index = objectType.integerValue;
+        [self addObstacle:index];
     
-    NSValue *position = [restoreSettings objectAtIndex:1];
-    self.currentObstacle.position = position.CGPointValue;
+        NSValue *position = [restoreSettings objectAtIndex:2];
+        self.currentObstacle.position = position.CGPointValue;
+    }
+    
 }
 
 - (void)setupRandomPosition {
     
+    // Indicate there is a secondary obstacle
+    self.obstacleExists = YES;
+    [self.settings addObject:[NSNumber numberWithBool:self.obstacleExists]];
+
     // Select internal obstacle at random from obstacle library
     self.obstacleSelected = arc4random()%5;
     [self addObstacle:self.obstacleSelected];
@@ -103,7 +114,21 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
 }
 
 -(BOOL)hasCollided:(CGPoint)ballPos {
+    
+    CGPoint currentObstaclePos = [self.currentObstacle convertToWorldSpace:ccp(0, 0)];
+    if (fabsf(currentObstaclePos.x - ballPos.x) < 50.0f && fabsf(currentObstaclePos.y - ballPos.y)< 20.0f) {
+        return true;
+    }
     return false;
+}
+
+-(void)actOnCollision {
+    [self.settings removeAllObjects]; // Remove all info on object
+    self.obstacleExists = NO;
+    [self.settings addObject:[NSNumber numberWithBool:self.obstacleExists]];
+    // Remove secondary obstacle from screen
+    [self.currentObstacle removeFromParent];
+    
 }
 
 @end

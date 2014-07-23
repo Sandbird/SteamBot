@@ -184,8 +184,8 @@
 						<string>Point</string>
 						<key>value</key>
 						<array>
-							<real>0.0</real>
-							<real>0.5</real>
+							<real>0.83525168895721436</real>
+							<real>0.84408605098724365</real>
 						</array>
 					</dict>
 					<dict>
@@ -401,8 +401,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>158.62307739257812</real>
-							<real>33.403079986572266</real>
+							<real>0.0</real>
+							<real>0.0</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -462,6 +462,8 @@
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 				<key>seqExpanded</key>
 				<true/>
 			</dict>
@@ -602,7 +604,7 @@
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>0.93333333730697632</real>
+			<real>0.1666666716337204</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

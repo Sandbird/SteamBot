@@ -85,22 +85,20 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
         case 2:
             // Water drop
             self.currentObstacle.position = ccp(random*range, height);
-            CCLOG(@"bubble pos: %f",random*range);
             break;
         case 3:
             // Right portable burner
-            self.currentObstacle.position = ccp(320.0f, height);
+            self.currentObstacle.position = ccp(200.0f, height);
             break;
         case 4:
             // Left portable burner
-            self.currentObstacle.position = ccp(0.0f, height);
+            self.currentObstacle.position = ccp(120.0f, height);
             break;
             
         default:
             break;
     }
     [self.settings addObject:[NSValue valueWithCGPoint:self.currentObstacle.position]];
-    
 }
 
 -(void)addObstacle:(NSUInteger)index{
@@ -115,20 +113,69 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
 
 -(BOOL)hasCollided:(CGPoint)ballPos {
     
-    CGPoint currentObstaclePos = [self.currentObstacle convertToWorldSpace:ccp(0, 0)];
-    if (fabsf(currentObstaclePos.x - ballPos.x) < 50.0f && fabsf(currentObstaclePos.y - ballPos.y)< 20.0f) {
-        return true;
+    // Locate obstacle in screen space
+    CGPoint obstacleWorld = [self.currentObstacle convertToWorldSpace:ccp(0, 0)];
+    CGPoint obstacleOffset;
+    
+    switch (self.obstacleSelected) {
+        case 0:
+            //leftLedge
+            break;
+        case 1:
+            // rightLedge
+            break;
+        case 2:
+            // Water drop
+            if (fabsf(obstacleWorld.x - ballPos.x) < 50.0f && fabsf(obstacleWorld.y - ballPos.y)< 20.0f) {
+                return true;
+            }
+            break;
+        case 3:
+            // Right portable burner
+            obstacleOffset = ccp(obstacleWorld.x - 100.0, 0);
+            if (ballPos.x > obstacleOffset.x - 25.0f || ballPos.x < obstacleOffset.x + 25.0f) {
+                if (ballPos.y < obstacleWorld.y + 50.0) {
+                    return true;
+                }
+            }
+            break;
+        case 4:
+            // Left portable burner
+            break;
+            
+        default:
+            break;
     }
     return false;
 }
 
 -(void)actOnCollision {
-    [self.settings removeAllObjects]; // Remove all info on object
-    self.obstacleExists = NO;
-    [self.settings addObject:[NSNumber numberWithBool:self.obstacleExists]];
-    // Remove secondary obstacle from screen
-    [self.currentObstacle removeFromParent];
     
+    switch (self.obstacleSelected) {
+        case 0:
+            //leftLedge
+            break;
+        case 1:
+            // rightLedge
+            break;
+        case 2:
+            // Water drop
+            [self.settings removeAllObjects]; // Remove all info on object
+            self.obstacleExists = NO;
+            [self.settings addObject:[NSNumber numberWithBool:self.obstacleExists]];
+            // Remove secondary obstacle from screen
+            [self.currentObstacle removeFromParent];
+            break;
+        case 3:
+            // Right portable burner
+            break;
+        case 4:
+            // Left portable burner
+            break;
+            
+        default:
+            break;
+    }
 }
 
 @end

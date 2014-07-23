@@ -19,12 +19,13 @@ BOOL _pulseOn;
 // info on where to bounce SteamBot
 
 typedef struct {
-    float base;
+    CGPoint base;
     float targetheight;
     float springConstant;
     float left;
     float right;
     float lookahead; // increases or decreases bounce
+    float triggerHeight;
     
 }corridor;
 
@@ -52,6 +53,7 @@ typedef struct {
 @property (nonatomic, strong) CCNode *secondaryBackground;
 @property (nonatomic, strong) CCNode *waterGaugeLeft;
 @property (nonatomic, strong) CCNode *waterGaugeRight;
+@property (nonatomic, strong) CCNode *mainBurner;
 @property (nonatomic) NSInteger backgroundBase;
 
 
@@ -74,9 +76,7 @@ float delay;
 float timeToNextBlink;
 CCAnimationManager  *steamBotAnimation;
 bool corridorIsClosed;
-
-
-
+CGPoint particlePos;
 
 
 - (void)didLoadFromCCB {
@@ -107,14 +107,17 @@ bool corridorIsClosed;
     isBurning = FALSE;
     bottomMost = 0;
     delay = 0;
-    corridorIsClosed = YES;
+    corridorIsClosed = NO;
     _backgroundBase = 0;
     
     // Fire for device
-    // particles = [CCParticleSystemQuad particleWithFile:@"fire.plist"];
     self.particles = [CCParticleSystem particleWithFile:@"burnerFire.plist"];
-    [self addChild:self.particles z:1];
-    self.particles.position = ccp(160, 35);
+    // [self addChild:self.particles z:3];
+    [self.physicsNode addChild:self.particles z:3];
+    
+    particlePos = CGPointMake(self.mainBurner.position.x, self.mainBurner.position.y + 25.0f);
+    self.particles.position = particlePos;
+    self.particles.visible = NO;
     
     // Steam for steamBot
     self.steam = [CCParticleSystem particleWithFile:@"steamEffect.plist"];
@@ -128,12 +131,14 @@ bool corridorIsClosed;
     
     topMost = self.corridor.position.y + self.corridor.boundingBox.size.height;
     
-    col1.base = 0.0f;
+    // Default position for burner column
+    col1.base = ccp(160.0f, 0);
     col1.targetheight = 75.0f;
     col1.springConstant = .00001f;
     col1.left = 0.0f;
     col1.right = 320.0f;
     col1.lookahead = .25f; // 2.5f is the default value!! .25 very bouncy.
+    col1.triggerHeight = 200.0f;
     
     currentCorridorPos = [self.corridor convertToWorldSpace:ccp(0, 0)];
     
@@ -146,6 +151,8 @@ bool corridorIsClosed;
     [self.steamLevel setZOrder:2];
     [self.waterGaugeLeft setZOrder:3];
     [self.waterGaugeRight setZOrder:3];
+    [self.mainBurner setZOrder:3];
+    [self.particles setZOrder:3];
     
 }
 
@@ -156,7 +163,6 @@ bool corridorIsClosed;
     touch_X = touchLocation.x;
     _pulseOn = TRUE;
     self.steam.visible = TRUE;
-    self.particles.visible = FALSE;
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
@@ -186,19 +192,34 @@ bool corridorIsClosed;
     screenHeight = self.scene.boundingBox.size.height;
     
     mY = [self.steamBot convertToWorldSpace:ccp(0, 0)];
+    CCLOG(@"ball.y = %f, target = %f base: %f",self.steamBot.position.y,col1.targetheight,col1.base.y);
     
-    self.steam.position = CGPointMake(mY.x,mY.y - 30);
+    // Steam for robot
+    self.steam.position = CGPointMake(self.steamBot.position.x,self.steamBot.position.y - 30);
     
-    float distanceAboveGround = mY.y - col1.base;
+    // float distanceAboveGround = self.steamBot.position.y - col1.base.y;
+    float distanceAboveGround = self.steamBot.position.y;
+    
+    
+    // Is the ball in the column?
+    if (self.steamBot.position.x > col1.left && self.steamBot.position.x < col1.right)
+    {
+        if (self.steamBot.position.y < col1.triggerHeight && self.steamBot.position.y > col1.base.y + 10.0f) {
+            
+            self.steamBot.position = ccp(col1.base.x, self.steamBot.position.y);
+            self.particles.position = particlePos;
+            self.particles.visible = YES; // in column below trigger, turn on fire
+            if (distanceAboveGround < col1.targetheight && distanceAboveGround > 0) {
+                [self bounce];
+                isBurning = YES;
+            }
+
+        } else self.particles.visible = NO; // otherwise, turn it off
         
-    // Check to see if corridor should close
-    // First need to trigger the effect
-    if (mY.y < 120) {
-        corridorIsClosed = NO;
     }
     
-    CGFloat closePoint = 250;
-    if (!corridorIsClosed && mY.y > closePoint) {
+    CGFloat closePoint = 300.0f;
+    if (!corridorIsClosed && self.steamBot.position.y > closePoint) {
         CCAnimationManager *corrAnimation = self.corridor.animationManager;
         [corrAnimation runAnimationsForSequenceNamed:@"CloseGap"];
         corridorIsClosed = YES;
@@ -209,7 +230,7 @@ bool corridorIsClosed;
     // Ball on burners -- increase pressure, reduce water
     if (isBurning) {
         
-        self.steamLevel.scaleY = self.steamLevel.scaleY + 1.0f;
+        self.steamLevel.scaleY = self.steamLevel.scaleY + (.05 * delta);
         
         if (self.steamLevel.scaleY > 1.0) {
             self.steamLevel.scaleY = 1.0;
@@ -217,7 +238,7 @@ bool corridorIsClosed;
         
         // Reduce water in valve
         if (self.steamLevel.scaleY < 1) {
-            self.waterLevel.scaleY = self.waterLevel.scaleY - (.01 * delta);
+            self.waterLevel.scaleY = self.waterLevel.scaleY - (0.025 * delta);
         }
         if (self.waterLevel.scaleY < 0) {
             self.waterLevel.scaleY = 0;
@@ -268,12 +289,55 @@ bool corridorIsClosed;
         
         // Check for obstacle collision with various objects inside obstacle
         for (Obstacle *anObstacle in self.obstacles) {
-            if (anObstacle.position.y == obstInfo.objectPosition.y) {
-                if ([anObstacle hasCollided:mY]) {
-                    [anObstacle actOnCollision];
-                    obstInfo.settings = anObstacle.settings; // reset settings
-                    // CCLOG(@"Collision!!");
+            if (anObstacle.position.y == obstInfo.objectPosition.y) { // This obstacle is onscreen right now
+                
+                // Is the ball within the borders of this obstacle?
+                if (self.steamBot.position.y > anObstacle.position.y && self.steamBot.position.y < anObstacle.position.y + anObstacle.boundingBox.size.height) {
+                    NSNumber *obstacleTemp =[obstInfo.settings objectAtIndex:1];
+                    NSInteger obstacleSel = obstacleTemp.intValue;
+
+                    CGPoint innerObst;
+                    switch (obstacleSel) {
+                        case 0: // Left Ledge
+                            break;
+                        case 1: // Right Ledge
+                            break;
+                        case 2: // Water drop
+                        
+                            /* if ([anObstacle hasCollided:mY]) {
+                             // TODO: Collision not working
+                             CCLOG(@"water collision");
+                             [anObstacle actOnCollision];
+                             obstInfo.settings = anObstacle.settings; // reset settings
+                             } */
+                            break;
+                        case 3: // Right burner
+                            innerObst = ccp(anObstacle.position.x + 200.0f, anObstacle.position.y + 148.0f);
+                            particlePos = CGPointMake(col1.base.x, anObstacle.position.y + 160.0f);
+                            col1.base = ccp(innerObst.x, innerObst.y - 10.0f);
+                            col1.left = innerObst.x - 50.0f;
+                            col1.right = innerObst.x + 50.0f;
+                            col1.targetheight = col1.base.y + 76.0f;
+                            col1.triggerHeight = col1.base.y + 150.0f;
+                            col1.lookahead = 5.0f;
+                            col1.springConstant = 0.5f;
+                            break;
+                        case 4: // Left burner
+                            innerObst = ccp(anObstacle.position.x + 120.0f, anObstacle.position.y + 148.0f);
+                            particlePos = CGPointMake(col1.base.x, anObstacle.position.y + 160.0f);
+                            col1.base = ccp(innerObst.x, innerObst.y - 10.0f);
+                            col1.left = innerObst.x - 50.0f;
+                            col1.right = innerObst.x + 50.0f;
+                            col1.targetheight = col1.base.y + 76.0f;
+                            col1.triggerHeight = col1.base.y + 150.0f;
+                            col1.lookahead = 5.0f;
+                            col1.springConstant = 0.5f;
+                            break;
+                        default:
+                        break;
+                    }
                 }
+                
             }
             
         }
@@ -344,19 +408,6 @@ bool corridorIsClosed;
         }
     }
     
-    /* CGPoint speed = self.steamBot.physicsBody.velocity;
-    if (speed.y < 1.0 && speed.y > -1.0) {
-        [self.steamBot.physicsBody applyImpulse:ccp(0, 500.0f)];
-    }*/
-    
-    // Bounce if near the ground
-    if (distanceAboveGround < col1.targetheight && _physicsNode.position.y == 0) {
-
-        [self bounce];
-        isBurning = TRUE;
-    }
-    
-    
     self.physicsNode.position = currentPhysicsPos;
     
     self.currentBackground.position = currentBackgroundPos;
@@ -408,10 +459,12 @@ bool corridorIsClosed;
     // CCLOG(@"current background: %f, SteamBot %f",currentBackgroundPos.y, self.steamBot.position.y);
 }
 
- -(void)bounce
+-(void)bounce
 {
     CGPoint gravity = self.physicsNode.gravity;
-    float groundDist = mY.y - col1.base;
+    //float groundDist = self.steamBot.position.y - col1.base.y;
+    float groundDist = self.steamBot.position.y;
+    
     
     // float base = col1.base;
     float speed = _steamBot.physicsBody.velocity.y;
@@ -440,7 +493,7 @@ bool corridorIsClosed;
     
     obstacle = (Obstacle *) [CCBReader load:@"baseObstacle"];
     [obstacle setupRandomPosition];
-    obstacle.position = ccp(160.0, topMost);
+    obstacle.position = ccp(0, topMost);
     [self.obstacles addObject:obstacle]; // add obstacle to obstacle list
     [self.physicsNode addChild:obstacle]; // add obstacle to screen
     topMost = obstacle.boundingBox.size.height + obstacle.position.y; // new top from current obstacle
@@ -452,7 +505,6 @@ bool corridorIsClosed;
     
     // [self.obstacleList addObject:info];
     [self.obstacleList addObject:info];
-    CCLOG(@"Total obstacles on screen: %lu",(unsigned long)self.obstacles.count);
 }
 
 - (void)restoreObstacle:(ObstacleInfo *)info { // Restore previously deleted obstacle
@@ -466,7 +518,6 @@ bool corridorIsClosed;
     
     [self.obstacles addObject:obstacle]; // add obstacle to list of obstacles
     [self.physicsNode addChild:obstacle]; // add obstacle to screen
-    CCLOG(@"Obstacle restored");
     
     info.obstacleInLayer = YES; // indicate that object is on screen
     

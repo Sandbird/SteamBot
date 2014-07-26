@@ -11,15 +11,11 @@
 
 #define ARC4RANDOM_MAX      0x100000000
 
-static const CGFloat minimumXPositionLeftPole = 275.0f;
-static const CGFloat maximumXPositionLeftPole = 475.0f;
-
 // static const CGFloat poleDistance = 80.0f;
 
 @interface Obstacle()
 
 @property (nonatomic, strong) NSMutableArray *obstacleLibrary;
-@property NSInteger obstacleSelected;
 @property (nonatomic, strong)CCNode *currentObstacle;
 @property (nonatomic)BOOL obstacleExists;
 
@@ -65,12 +61,11 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
     [self.settings addObject:[NSNumber numberWithBool:self.obstacleExists]];
 
     // Select internal obstacle at random from obstacle library
-    self.obstacleSelected = arc4random()%5;
+    self.obstacleSelected = arc4random_uniform(5);
     [self addObstacle:self.obstacleSelected];
     
     // Get random x position (y position static)
-    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
-    CGFloat range = maximumXPositionLeftPole - minimumXPositionLeftPole;
+    CGFloat bubbleX = (double)arc4random_uniform(270) + 30;
     CGFloat height = self.boundingBox.size.height/2;
     
     switch (self.obstacleSelected) {
@@ -84,7 +79,7 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
             break;
         case 2:
             // Water drop
-            self.currentObstacle.position = ccp(random*range, height);
+            self.currentObstacle.position = ccp(bubbleX, height);
             break;
         case 3:
             // Right portable burner
@@ -111,11 +106,13 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
     [self.settings addObject:[NSNumber numberWithInteger:self.obstacleSelected]];
 }
 
--(BOOL)hasCollided:(CGPoint)ballPos {
+-(BOOL)hasCollided:(CGPoint)ballPos withThisInnerObstacle:(NSNumber *)innerObst{
     
     // Locate obstacle in screen space
     CGPoint obstacleWorld = [self.currentObstacle convertToWorldSpace:ccp(0, 0)];
     CGPoint obstacleOffset;
+    NSInteger thisInnerObst = innerObst.integerValue;
+    self.obstacleSelected = thisInnerObst;
     
     switch (self.obstacleSelected) {
         case 0:
@@ -127,6 +124,7 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
         case 2:
             // Water drop
             if (fabsf(obstacleWorld.x - ballPos.x) < 50.0f && fabsf(obstacleWorld.y - ballPos.y)< 20.0f) {
+                CCLOG(@"Ball collision!");
                 return true;
             }
             break;
@@ -160,6 +158,7 @@ static const CGFloat maximumXPositionLeftPole = 475.0f;
             break;
         case 2:
             // Water drop
+            // TODO: Account for only one object in this array
             [self.settings removeAllObjects]; // Remove all info on object
             self.obstacleExists = NO;
             [self.settings addObject:[NSNumber numberWithBool:self.obstacleExists]];

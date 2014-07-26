@@ -192,7 +192,6 @@ CGPoint particlePos;
     screenHeight = self.scene.boundingBox.size.height;
     
     mY = [self.steamBot convertToWorldSpace:ccp(0, 0)];
-    CCLOG(@"ball.y = %f, target = %f base: %f",self.steamBot.position.y,col1.targetheight,col1.base.y);
     
     // Steam for robot
     self.steam.position = CGPointMake(self.steamBot.position.x,self.steamBot.position.y - 30);
@@ -230,16 +229,13 @@ CGPoint particlePos;
     // Ball on burners -- increase pressure, reduce water
     if (isBurning) {
         
-        self.steamLevel.scaleY = self.steamLevel.scaleY + (.05 * delta);
-        
+        if (self.waterLevel.scaleY > 0) self.steamLevel.scaleY = self.steamLevel.scaleY + (.05 * delta);
         if (self.steamLevel.scaleY > 1.0) {
             self.steamLevel.scaleY = 1.0;
         }
         
         // Reduce water in valve
-        if (self.steamLevel.scaleY < 1) {
-            self.waterLevel.scaleY = self.waterLevel.scaleY - (0.025 * delta);
-        }
+        if (self.steamLevel.scaleY < 1) self.waterLevel.scaleY = self.waterLevel.scaleY - (0.025 * delta);
         if (self.waterLevel.scaleY < 0) {
             self.waterLevel.scaleY = 0;
         }
@@ -293,8 +289,11 @@ CGPoint particlePos;
                 
                 // Is the ball within the borders of this obstacle?
                 if (self.steamBot.position.y > anObstacle.position.y && self.steamBot.position.y < anObstacle.position.y + anObstacle.boundingBox.size.height) {
-                    NSNumber *obstacleTemp =[obstInfo.settings objectAtIndex:1];
-                    NSInteger obstacleSel = obstacleTemp.intValue;
+                    NSNumber *boolTemp = [obstInfo.settings objectAtIndex:0];
+                    BOOL innerObstExist = boolTemp.boolValue;
+                    if (!innerObstExist) break;                    // TODO: Account for NO inner obstacles
+                    NSNumber *innerObstSelected =[obstInfo.settings objectAtIndex:1];
+                    NSInteger obstacleSel = innerObstSelected.intValue;
 
                     CGPoint innerObst;
                     switch (obstacleSel) {
@@ -303,15 +302,17 @@ CGPoint particlePos;
                         case 1: // Right Ledge
                             break;
                         case 2: // Water drop
-                        
-                            /* if ([anObstacle hasCollided:mY]) {
-                             // TODO: Collision not working
-                             CCLOG(@"water collision");
-                             [anObstacle actOnCollision];
-                             obstInfo.settings = anObstacle.settings; // reset settings
-                             } */
+                            CCLOG(@"ostInfo: %d obstacle %d",obstacleSel, anObstacle.obstacleSelected);
+                            if ([anObstacle hasCollided:mY withThisInnerObstacle:innerObstSelected]) {
+                                [anObstacle actOnCollision];
+                                obstInfo.settings = anObstacle.settings; // reset settings
+                                self.waterLevel.scaleY += .25f;
+                                if (self.waterLevel.scaleY> 1.0f) self.waterLevel.scaleY = 1.0f;
+                            }
                             break;
+                            
                         case 3: // Right burner
+                            
                             innerObst = ccp(anObstacle.position.x + 200.0f, anObstacle.position.y + 148.0f);
                             particlePos = CGPointMake(col1.base.x, anObstacle.position.y + 160.0f);
                             col1.base = ccp(innerObst.x, innerObst.y - 10.0f);
@@ -323,6 +324,7 @@ CGPoint particlePos;
                             col1.springConstant = 0.5f;
                             break;
                         case 4: // Left burner
+                            
                             innerObst = ccp(anObstacle.position.x + 120.0f, anObstacle.position.y + 148.0f);
                             particlePos = CGPointMake(col1.base.x, anObstacle.position.y + 160.0f);
                             col1.base = ccp(innerObst.x, innerObst.y - 10.0f);
@@ -357,6 +359,7 @@ CGPoint particlePos;
     }
     
     // Power the ball
+    // if (_pulseOn && self.steamLevel.scaleY > 0) {
     if (_pulseOn) {
         
         // reduce pressure
@@ -389,9 +392,6 @@ CGPoint particlePos;
     }else {
         // _pulseOn is FALSE, ball is falling
         if (mY.y < screenHeight/2 && currentPhysicsPos.y < relativeBase) {
-            /*currentPhysicsPos.y += 10.0f;
-            currentCorridorPos.y += 10.0f;
-            currentBackgroundPos.y += 10.f;*/
             
             currentPhysicsPos.y = -(self.steamBot.position.y - (screenHeight/2));
             currentBackgroundPos.y = -((self.steamBot.position.y - (screenHeight/2)) - (_backgroundBase * 1440));

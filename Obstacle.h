@@ -12,12 +12,13 @@
 
 -(void)setupRandomPosition;
 -(void)restorePosition:(NSMutableArray *)restoreSettings;
--(BOOL)hasCollided:(CGPoint)ballPos;
+-(BOOL)hasCollided:(CGPoint)ballPos withThisInnerObstacle:(NSNumber *)innerObst;
 -(void)addObstacle:(NSUInteger)index;
 -(void)actOnCollision;
 
 @property (nonatomic,strong)CCSprite *leftPole;
 @property (nonatomic, strong)CCSprite *rightPole;
 @property (nonatomic, strong)NSMutableArray *settings;
+@property NSInteger obstacleSelected;
 
 @end

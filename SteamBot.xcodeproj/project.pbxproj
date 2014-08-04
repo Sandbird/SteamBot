@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3611162418F3233F00C8EB44 /* burnerFire.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3611162318F3233F00C8EB44 /* burnerFire.plist */; };
+		3622F4F11990370400A87EC6 /* BotSteam.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3622F4F01990370400A87EC6 /* BotSteam.mp3 */; };
 		3627B89A1913EE260009CF49 /* Obstacle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3627B8991913EE260009CF49 /* Obstacle.m */; };
 		36736C3B198816F70039AF19 /* burnerSteam.wav in Resources */ = {isa = PBXBuildFile; fileRef = 36736C3A198816F70039AF19 /* burnerSteam.wav */; };
 		36736C41198823C00039AF19 /* liftOff.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 36736C40198823C00039AF19 /* liftOff.mp3 */; };
@@ -72,6 +73,7 @@
 
 /* Begin PBXFileReference section */
 		3611162318F3233F00C8EB44 /* burnerFire.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = burnerFire.plist; sourceTree = "<group>"; };
+		3622F4F01990370400A87EC6 /* BotSteam.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BotSteam.mp3; sourceTree = "<group>"; };
 		3627B8981913EE260009CF49 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
 		3627B8991913EE260009CF49 /* Obstacle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Obstacle.m; sourceTree = "<group>"; };
 		36736C3A198816F70039AF19 /* burnerSteam.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = burnerSteam.wav; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 		36736C36198816420039AF19 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				3622F4F01990370400A87EC6 /* BotSteam.mp3 */,
 				36DDBDAC198EF729001B8F5C /* steamShortBurst.wav */,
 				36736C481988A5570039AF19 /* boingBump.mp3 */,
 				36736C461988A3FD0039AF19 /* metalicBump.mp3 */,
@@ -379,6 +382,7 @@
 				B71F5917188484E7003F4D28 /* iPhone.png in Resources */,
 				36736C471988A3FD0039AF19 /* metalicBump.mp3 in Resources */,
 				B7378975180762440076A88C /* Default-568h@2x.png in Resources */,
+				3622F4F11990370400A87EC6 /* BotSteam.mp3 in Resources */,
 				B71F5918188484E7003F4D28 /* iPhone@2x.png in Resources */,
 				B7378977180762440076A88C /* Default.png in Resources */,
 				3611162418F3233F00C8EB44 /* burnerFire.plist in Resources */,

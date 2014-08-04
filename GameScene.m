@@ -130,6 +130,7 @@ float soundDelay;
     [self.audio preloadEffect:@"burnerSteam.wav"];
     [self.audio preloadEffect:@"liftOff.mp3"];
     [self.audio preloadEffect:@"waterDrop01.mp3"];
+    [self.audio preloadEffect:@"BotSteam.mp3"];
 
     
     
@@ -409,7 +410,7 @@ float soundDelay;
         self.steam.visible = YES;
         
         if (![self.liftOffAudio playing]) {
-            self.liftOffAudio = [self.audio playEffect:@"steamShortBurst.wav" loop:YES];
+            self.liftOffAudio = [self.audio playEffect:@"BotSteam.mp3" loop:YES];
         }
         
         // reduce pressure

@@ -23,7 +23,8 @@
     
     // Disable the resume button for now
     self.resumeButton.enabled = NO;
-    [self.audio preloadEffect:@"liftOff.wav"];
+    self.audio = [OALSimpleAudio sharedInstance];
+    [self.audio preloadEffect:@"liftOff.mp3"];
 
 }
 
@@ -31,6 +32,8 @@
 -(void)gameStart
 {
 
+    [self.audio playEffect:@"liftOff.mp3"];
+    
     CCScene *gameplayScene = [CCBReader loadAsScene:@"GameScene"];
     [[CCDirector sharedDirector] replaceScene:gameplayScene];
     

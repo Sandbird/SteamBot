@@ -3,7 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>filenames</key>
-	<dict/>
+	<dict>
+		<key>Latch.wav</key>
+		<string>Latch.caf</string>
+		<key>doorOpenOneSecond.wav</key>
+		<string>doorOpenOneSecond.caf</string>
+		<key>liftOffTitle.wav</key>
+		<string>liftOffTitle.caf</string>
+	</dict>
 	<key>metadata</key>
 	<dict>
 		<key>version</key>

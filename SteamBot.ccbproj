@@ -80,8 +80,26 @@
 			<key>previewFolderHidden</key>
 			<true/>
 		</dict>
+		<key>Latch.wav</key>
+		<dict>
+			<key>format_android_sound</key>
+			<integer>0</integer>
+			<key>format_android_sound_quality</key>
+			<integer>0</integer>
+			<key>format_ios_sound</key>
+			<integer>0</integer>
+			<key>format_ios_sound_quality</key>
+			<integer>0</integer>
+			<key>isDirty</key>
+			<true/>
+		</dict>
 		<key>Sprites</key>
 		<dict/>
+		<key>SteamAnim</key>
+		<dict>
+			<key>isSmartSpriteSheet</key>
+			<true/>
+		</dict>
 		<key>SteamBot</key>
 		<dict>
 			<key>isSmartSpriteSheet</key>
@@ -178,6 +196,30 @@
 			<integer>2</integer>
 			<key>tabletScale</key>
 			<integer>1</integer>
+		</dict>
+		<key>doorOpenOneSecond.wav</key>
+		<dict>
+			<key>format_android_sound</key>
+			<integer>0</integer>
+			<key>format_android_sound_quality</key>
+			<integer>0</integer>
+			<key>format_ios_sound</key>
+			<integer>0</integer>
+			<key>format_ios_sound_quality</key>
+			<integer>0</integer>
+		</dict>
+		<key>liftOffTitle.wav</key>
+		<dict>
+			<key>format_android_sound</key>
+			<integer>0</integer>
+			<key>format_android_sound_quality</key>
+			<integer>0</integer>
+			<key>format_ios_sound</key>
+			<integer>0</integer>
+			<key>format_ios_sound_quality</key>
+			<integer>0</integer>
+			<key>isDirty</key>
+			<true/>
 		</dict>
 	</dict>
 	<key>versionStr</key>

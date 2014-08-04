@@ -7,6 +7,8 @@
 //
 
 #import "Obstacle.h"
+#import "OALSimpleAudio.h"
+
 
 
 #define ARC4RANDOM_MAX      0x100000000
@@ -16,8 +18,10 @@
 @interface Obstacle()
 
 @property (nonatomic, strong) NSMutableArray *obstacleLibrary;
-@property (nonatomic, strong)CCNode *currentObstacle;
 @property (nonatomic)BOOL obstacleExists;
+@property (nonatomic, strong) OALSimpleAudio *audio; // Shared instance for all sounds
+
+
 
 @end
 
@@ -34,6 +38,12 @@
     [self.obstacleLibrary addObject:@"WaterDroplet"];
     [self.obstacleLibrary addObject:@"burnerRight"];
     [self.obstacleLibrary addObject:@"portableBurnerLeft"];
+    
+    [self.audio preloadEffect:@"waterDrop01.mp3"];
+    
+    self.currentObstacle.physicsBody.collisionType = @"obstacle";
+    self.currentObstacle.physicsBody.sensor = TRUE;
+
     
 }
 
@@ -71,11 +81,11 @@
     switch (self.obstacleSelected) {
         case 0:
             //leftLedge
-            self.currentObstacle.position = ccp(38.0f, height);
+            self.currentObstacle.position = ccp(0.0f, height);
             break;
         case 1:
             // rightLedge
-            self.currentObstacle.position = ccp(282.0f, height);
+            self.currentObstacle.position = ccp(320.0f, height);
             break;
         case 2:
             // Water drop

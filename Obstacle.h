@@ -20,5 +20,7 @@
 @property (nonatomic, strong)CCSprite *rightPole;
 @property (nonatomic, strong)NSMutableArray *settings;
 @property NSInteger obstacleSelected;
+@property (nonatomic, strong)CCNode *currentObstacle;
+
 
 @end

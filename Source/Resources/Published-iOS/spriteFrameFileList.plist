@@ -10,6 +10,7 @@
 	<key>spriteFrameFiles</key>
 	<array>
 		<string>SteamBot.plist</string>
+		<string>SteamAnim.plist</string>
 		<string>WaterDrop.plist</string>
 		<string>SteamBotDoor.plist</string>
 	</array>

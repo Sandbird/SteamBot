@@ -7,6 +7,15 @@
 //
 
 #import "MainScene.h"
+#import "OALSimpleAudio.h"
+
+@interface MainScene()
+
+@property (nonatomic, strong) OALSimpleAudio *audio; // Shared instance for all sounds
+@property (nonatomic, strong) id<ALSoundSource> buttonSound; // Source of burnerAudio sound
+
+
+@end
 
 @implementation MainScene
 
@@ -14,13 +23,17 @@
     
     // Disable the resume button for now
     self.resumeButton.enabled = NO;
+    [self.audio preloadEffect:@"liftOff.wav"];
+
 }
 
 // Load the primary game level
 -(void)gameStart
 {
+
     CCScene *gameplayScene = [CCBReader loadAsScene:@"GameScene"];
     [[CCDirector sharedDirector] replaceScene:gameplayScene];
+    
 }
 
 // Load the primary game level resuming where left off

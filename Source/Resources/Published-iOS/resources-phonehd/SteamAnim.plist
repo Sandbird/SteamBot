@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>frames</key>
+	<dict>
+		<key>SteamAnim/smoke01.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{670, 196}, {156, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{42, 22}, {156, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke02.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1, 196}, {240, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 22}, {240, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke03.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{727, 1}, {240, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 22}, {240, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke04.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{243, 1}, {240, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 22}, {240, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke05.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1, 1}, {240, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 22}, {240, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke06.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{436, 196}, {232, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{4, 22}, {232, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke07.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1, 680}, {240, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 22}, {240, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke08.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{1, 438}, {240, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<true/>
+			<key>sourceColorRect</key>
+			<string>{{0, 22}, {240, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke09.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{196, 196}, {238, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{1, 22}, {238, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+		<key>SteamAnim/smoke10.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{485, 1}, {240, 193}}</string>
+			<key>offset</key>
+			<string>{0, -11}</string>
+			<key>rotated</key>
+			<false/>
+			<key>sourceColorRect</key>
+			<string>{{0, 22}, {240, 193}}</string>
+			<key>sourceSize</key>
+			<string>{240, 215}</string>
+		</dict>
+	</dict>
+	<key>metadata</key>
+	<dict>
+		<key>format</key>
+		<integer>2</integer>
+		<key>size</key>
+		<string>{1024, 1024}</string>
+		<key>textureFileName</key>
+		<string>SteamAnim.png</string>
+	</dict>
+</dict>
+</plist>

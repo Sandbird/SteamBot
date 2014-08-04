@@ -11,6 +11,7 @@
 #import "Obstacle.h"
 #import "ObstacleInfo.h"
 #import "Tunnels.h"
+#import "OALSimpleAudio.h"
 
 BOOL _pulseOn;
 
@@ -35,8 +36,6 @@ typedef struct {
 @property (nonatomic, strong) CCPhysicsNode *physicsNode;
 
 @property (nonatomic, strong) CCParticleSystem *particles;
-@property (nonatomic, strong) CCParticleSystem *steam;
-
 @property (nonatomic, strong) CCNode *leftBorder;
 @property (nonatomic, strong) CCNode *rightBorder;
 
@@ -47,6 +46,8 @@ typedef struct {
 @property (nonatomic, strong) NSMutableArray *obstacleList;
 @property (nonatomic, strong) CCNode *waterLevel;
 @property (nonatomic, strong) CCNode *steamLevel;
+@property (nonatomic, strong) CCNode *steam;
+
 @property (nonatomic, strong) NSMutableArray *backgroundNodes;
 @property (nonatomic) NSInteger backgroundIndex;
 @property (nonatomic, strong) CCNode *currentBackground;
@@ -55,6 +56,11 @@ typedef struct {
 @property (nonatomic, strong) CCNode *waterGaugeRight;
 @property (nonatomic, strong) CCNode *mainBurner;
 @property (nonatomic) NSInteger backgroundBase;
+@property (nonatomic, strong) CCLabelTTF *scoreLabel;
+@property (nonatomic, strong) OALSimpleAudio *audio; // Shared instance for all sounds
+@property (nonatomic, strong) id<ALSoundSource> burnerAudio; // Source of burnerAudio sound
+@property (nonatomic, strong) id<ALSoundSource> liftOffAudio; // Source of burnerAudio sound
+@property (nonatomic, strong) id<ALSoundSource> bumpAudio; // Source of burnerAudio sound
 
 
 @end
@@ -77,10 +83,17 @@ float timeToNextBlink;
 CCAnimationManager  *steamBotAnimation;
 bool corridorIsClosed;
 CGPoint particlePos;
+float soundDelay;
 
 
 - (void)didLoadFromCCB {
-        
+    
+    // Set up collision detection
+    // Set this class as the delegate
+    _physicsNode.collisionDelegate = self;
+    // Set collision type
+    self.steamBot.physicsBody.collisionType = @"steamBot";
+    
     // Enable touches
     self.userInteractionEnabled = TRUE;
     
@@ -109,6 +122,16 @@ CGPoint particlePos;
     delay = 0;
     corridorIsClosed = NO;
     _backgroundBase = 0;
+    soundDelay = 0.0f;
+    
+    
+    // Music and audio effects
+    self.audio = [OALSimpleAudio sharedInstance];
+    [self.audio preloadEffect:@"burnerSteam.wav"];
+    [self.audio preloadEffect:@"liftOff.mp3"];
+    [self.audio preloadEffect:@"waterDrop01.mp3"];
+
+    
     
     // Fire for device
     self.particles = [CCParticleSystem particleWithFile:@"burnerFire.plist"];
@@ -119,15 +142,13 @@ CGPoint particlePos;
     self.particles.position = particlePos;
     self.particles.visible = NO;
     
-    // Steam for steamBot
-    self.steam = [CCParticleSystem particleWithFile:@"steamEffect.plist"];
-    [self addChild:self.steam z:1];
-    self.steam.visible = FALSE;
-    self.corridor = [CCBReader load:@"Corridor"];
+    self.steam = [CCBReader load:@"Steam"];
+    self.steam.visible = NO;
+    [self.physicsNode addChild:self.steam];
     
+    self.corridor = [CCBReader load:@"Corridor"];
     [self.physicsNode addChild:self.corridor];
     self.corridor.position = ccp(160.0, 50.0);
-    // [self.obstacles addObject:self.corridor];
     
     topMost = self.corridor.position.y + self.corridor.boundingBox.size.height;
     
@@ -153,7 +174,17 @@ CGPoint particlePos;
     [self.waterGaugeRight setZOrder:3];
     [self.mainBurner setZOrder:3];
     [self.particles setZOrder:3];
+    [self.scoreLabel setZOrder:3];
+    [self.steam setZOrder:2];
+    [self.steamBot setZOrder:3];
+
+    CGSize winSize = [[CCDirector sharedDirector] viewSize];
     
+    self.waterGaugeLeft.position = ccp(0.0f, winSize.height - 175.0f);
+    self.waterGaugeRight.position = ccp(320.0f, winSize.height - 175.0f);
+    self.waterLevel.position = ccp(self.waterLevel.position.x, self.waterGaugeLeft.position.y + 50.0f);
+    self.steamLevel.position = ccp(self.steamLevel.position.x, self.waterGaugeRight.position.y + 50.0f);
+
 }
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -162,13 +193,11 @@ CGPoint particlePos;
     CGPoint touchLocation = [touch locationInNode:self];
     touch_X = touchLocation.x;
     _pulseOn = TRUE;
-    self.steam.visible = TRUE;
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
     _pulseOn = FALSE;
-    self.steam.visible = FALSE;
 }
 
 -(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
@@ -180,6 +209,15 @@ CGPoint particlePos;
 
 -(void)update:(CCTime)delta
 {
+    screenHeight = self.scene.boundingBox.size.height;
+    
+    self.steam.position = ccp(self.steamBot.position.x, self.steamBot.position.y - 65.0f);
+    
+    soundDelay += delta;
+    
+    // Altitude on screen
+    self.scoreLabel.string = [NSString stringWithFormat:@"Altitude: %d", (int)(fabsf(self.physicsNode.position.y))];
+    
     // Make SteamBot blink
     timeToNextBlink += delta;
     if (timeToNextBlink > delay) {
@@ -189,12 +227,7 @@ CGPoint particlePos;
     }
     // delta = fminf(delta, 0.08f);
     
-    screenHeight = self.scene.boundingBox.size.height;
-    
     mY = [self.steamBot convertToWorldSpace:ccp(0, 0)];
-    
-    // Steam for robot
-    self.steam.position = CGPointMake(self.steamBot.position.x,self.steamBot.position.y - 30);
     
     // float distanceAboveGround = self.steamBot.position.y - col1.base.y;
     float distanceAboveGround = self.steamBot.position.y;
@@ -213,7 +246,10 @@ CGPoint particlePos;
                 isBurning = YES;
             }
 
-        } else self.particles.visible = NO; // otherwise, turn it off
+        } else {
+            self.particles.visible = NO; // otherwise, turn it off
+            isBurning = NO;
+        }
         
     }
     
@@ -229,6 +265,9 @@ CGPoint particlePos;
     // Ball on burners -- increase pressure, reduce water
     if (isBurning) {
         
+        if (![self.burnerAudio playing]) {
+            self.burnerAudio = [self.audio playEffect:@"burnerSteam.wav" loop:YES];
+        }
         if (self.waterLevel.scaleY > 0) self.steamLevel.scaleY = self.steamLevel.scaleY + (.05 * delta);
         if (self.steamLevel.scaleY > 1.0) {
             self.steamLevel.scaleY = 1.0;
@@ -238,6 +277,11 @@ CGPoint particlePos;
         if (self.steamLevel.scaleY < 1) self.waterLevel.scaleY = self.waterLevel.scaleY - (0.025 * delta);
         if (self.waterLevel.scaleY < 0) {
             self.waterLevel.scaleY = 0;
+        }
+    } else {
+        if ([self.burnerAudio playing]) {
+            [self.burnerAudio stop];
+            self.burnerAudio = nil;
         }
     }
     
@@ -302,8 +346,8 @@ CGPoint particlePos;
                         case 1: // Right Ledge
                             break;
                         case 2: // Water drop
-                            CCLOG(@"ostInfo: %d obstacle %d",obstacleSel, anObstacle.obstacleSelected);
                             if ([anObstacle hasCollided:mY withThisInnerObstacle:innerObstSelected]) {
+                                [self.audio playEffect:@"waterDrop01.mp3"];
                                 [anObstacle actOnCollision];
                                 obstInfo.settings = anObstacle.settings; // reset settings
                                 self.waterLevel.scaleY += .25f;
@@ -362,6 +406,12 @@ CGPoint particlePos;
     // if (_pulseOn && self.steamLevel.scaleY > 0) {
     if (_pulseOn) {
         
+        self.steam.visible = YES;
+        
+        if (![self.liftOffAudio playing]) {
+            self.liftOffAudio = [self.audio playEffect:@"steamShortBurst.wav" loop:YES];
+        }
+        
         // reduce pressure
         self.steamLevel.scaleY = self.steamLevel.scaleY - (.05 * delta);
         if (self.steamLevel.scaleY < 0) {
@@ -391,6 +441,17 @@ CGPoint particlePos;
         
     }else {
         // _pulseOn is FALSE, ball is falling
+        
+        self.steam.visible = NO;
+        
+        if ([self.liftOffAudio playing]) {
+            [self.liftOffAudio stop];
+            self.liftOffAudio = nil;if ([self.burnerAudio playing]) {
+                [self.burnerAudio stop];
+                self.burnerAudio = nil;
+            }
+        }
+        
         if (mY.y < screenHeight/2 && currentPhysicsPos.y < relativeBase) {
             
             currentPhysicsPos.y = -(self.steamBot.position.y - (screenHeight/2));
@@ -455,8 +516,6 @@ CGPoint particlePos;
         }
         
     }
-    
-    // CCLOG(@"current background: %f, SteamBot %f",currentBackgroundPos.y, self.steamBot.position.y);
 }
 
 -(void)bounce
@@ -551,6 +610,14 @@ CGPoint particlePos;
     }
     return isOffScreen;
     
+}
+
+// Collision detection between steamBot and obstacles
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair steamBot:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
+    if (![self.bumpAudio playing] && soundDelay > 0.75f) {
+        self.bumpAudio = [self.audio playEffect:@"bump01.mp3"];
+        soundDelay = 0.0f;
+    }
 }
 
 @end
